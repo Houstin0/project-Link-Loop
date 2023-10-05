@@ -1,5 +1,3 @@
-/* App.css */
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -25,8 +23,8 @@ body {
 }
 
 .post img {
-  width: 200px; /* Specific size for each post image */
-  height: 200px;
+  width: 400px; /* Specific size for each post image */
+  height: 500px;
   object-fit: cover; /* Maintain aspect ratio and cover */
   border-radius: 5px 0 0 5px; /* Rounded corners for the left side */
 }
@@ -65,7 +63,7 @@ body {
 }
 
 .post-comments {
-  max-height: 150px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
@@ -79,4 +77,5 @@ body {
   margin-right: 5px;
 }
 
-/* Add any additional styling you need for your app */
+
+/* responsiveness of app on any device */

@@ -16,7 +16,7 @@ function App() {
     }))
   }
 
-  
+
 
   useEffect(()=>{
     fetch('api/users').then(res => res.json()).then(data=>setUsers(data))
@@ -54,6 +54,9 @@ function App() {
               <button onClick={() => toggleComments(post.id)}>
                 {visibleComments[post.id] ? 'Hide Comments' : 'Show More Comments'}
               </button>
+              <div className='post-date'>
+                <span>{post.created_at}</span>
+              </div>
             </div>
           </div>
         ))}
