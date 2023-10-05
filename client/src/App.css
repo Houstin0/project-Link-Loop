@@ -6,6 +6,7 @@ body {
   padding: 0;
   background-color: #fafafa;
   color: black;
+  justify-content: center;
 }
 
 .posts-container {
