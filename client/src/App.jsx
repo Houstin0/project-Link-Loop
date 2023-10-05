@@ -16,6 +16,8 @@ function App() {
     }))
   }
 
+  
+
   useEffect(()=>{
     fetch('api/users').then(res => res.json()).then(data=>setUsers(data))
     fetch('/api/posts').then(res => res.json()).then(data=>setPosts(data))
