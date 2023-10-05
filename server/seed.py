@@ -16,7 +16,9 @@ with app.app_context():
     for user in range(20):
         new_user=User(
             username=fake.unique.first_name(),
-            password=fake.word()
+            password=fake.word(),
+            profile_picture_url=fake.image_url()
+
         )
         new_user.email = f'{new_user.username}@mail.com'
         db.session.add(new_user)

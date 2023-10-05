@@ -128,11 +128,11 @@ class Messages(Resource):
             return make_response(jsonify(message_dicts),200)
         
         except Exception as e:
-            response_dict = {"error": f"An error occurred while fetching messages.{str(e)}"}
+            response_dict = {"error": f"An error occurred while fetching messages: {str(e)}"}
             return make_response(jsonify(response_dict), 500)
         
     def post(self):
-        data = request.get_json()
+        data = request.get_json() 
         try:
             new_message=Message(
                 text=data.get('text'),
