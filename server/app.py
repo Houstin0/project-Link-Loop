@@ -60,6 +60,66 @@ class Users(Resource):
         
 api.add_resource(Users,'/users')
 
+class UserByID(Resource):
+    def get (self,id):
+        try:
+            user=User.query.filter_by(id=id).first()
+            if user:
+                user_dict=user.to_dict()
+                return make_response(jsonify(user_dict),200)
+            else:
+                response_dict = {"error": "User not found"}
+                return make_response(jsonify(response_dict), 404)
+
+        except Exception as e:
+            response_dict = {"error": f"An error occurred while fetching user by ID.{str(e)}"}
+            return make_response(jsonify(response_dict), 500)
+        
+    def patch(self,id):
+        data = request.get_json()
+        try:
+            user= User.query.filter_by(id=id).first()
+            if user:
+                for attr in data:
+                    setattr(user,attr,data.get(attr))
+                db.session.add(user)
+                db.session.commit()
+
+                response_dict=user.to_dict()
+                return make_response(jsonify(response_dict),200)   
+            else:
+                response_dict = {"error": "User not found"}
+                return make_response(jsonify(response_dict), 404)
+
+            
+        except Exception as e:
+            response_dict = {"error": f"{str(e)}"}
+            return make_response(jsonify(response_dict), 500)  
+
+    def delete(self, id):
+        user = User.query.filter_by(id=id).first()
+        try:
+            if user:
+                for message in user.messages:
+                    db.session.delete(message)
+                for post in user.posts:
+                    db.session.delete(post)
+                for comment in user.comments:
+                    db.session.delete(comment)        
+                db.session.delete(user)
+                db.session.commit()
+
+                return make_response('User deleted successfully', 204)
+            else:
+                response_dict = {"error": "User not found"}
+                return make_response(jsonify(response_dict), 404)
+            
+        except Exception as e:
+            response_dict = {"error": f"An error occurred while deleting the user: {str(e)}"}
+            return make_response(jsonify(response_dict), 500)      
+        
+api.add_resource(UserByID,'/users/<int:id>')
+
 class Messages(Resource):
     def get(self):
         try:
@@ -164,8 +224,6 @@ class Comments(Resource):
             return make_response(jsonify(response_dict), 403)    
 
 api.add_resource(Comments,'/comments')
-
-
 
 
 if __name__ == '__main__':

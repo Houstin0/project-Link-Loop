@@ -13,19 +13,9 @@ class User(db.Model,SerializerMixin):
     username= db.Column(db.String,nullable=False,unique=True)
     email= db.Column(db.String,unique=True)
     password= db.Column(db.String)
-
-class Post(db.Model,SerializerMixin):
-    __tablename__='posts'
-
-    serialize_rules=()
-
-    id=db.Column(db.Integer,primary_key=True) 
-    image_url= db.Column(db.String)
-    caption= db.Column(db.String)
-    likes= db.Column(db.Integer)
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
-    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
-    user_id= db.Column(db.Integer,db.ForeignKey('users.id'))  
+    messages = db.relationship('Message', back_populates='user')
+    posts = db.relationship('Post', back_populates='user')
+    comments = db.relationship('Comment', back_populates='user')
 
 class Message(db.Model,SerializerMixin):
     __tablename__='messages'
@@ -39,6 +29,26 @@ class Message(db.Model,SerializerMixin):
     sender_id= db.Column(db.Integer,db.ForeignKey('users.id'))
     recipient_id=db.Column(db.Integer)
 
+    user = db.relationship('User', back_populates='messages')
+
+   
+
+class Post(db.Model,SerializerMixin):
+    __tablename__='posts'
+
+    serialize_rules=()
+
+    id=db.Column(db.Integer,primary_key=True) 
+    image_url= db.Column(db.String)
+    caption= db.Column(db.String)
+    likes= db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    user_id= db.Column(db.Integer,db.ForeignKey('users.id'))  
+    user = db.relationship('User', back_populates='posts')
+
+
+
 class Comment(db.Model,SerializerMixin):
     __tablename__='comments'
 
@@ -50,5 +60,7 @@ class Comment(db.Model,SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     user_id= db.Column(db.Integer,db.ForeignKey('users.id'))
     post_id= db.Column(db.Integer,db.ForeignKey('posts.id'))
+
+    user = db.relationship('User', back_populates='comments')
 
 
