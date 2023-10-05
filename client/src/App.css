@@ -1,42 +1,81 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* App.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fafafa;
+  color: black;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.posts-container {
+  display: flex;
+  flex-direction: column; /* Vertical alignment */
+  max-width: 100%; /* Cover almost the whole page */
+  padding: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.post {
+  display: flex; /* Display post contents in a row */
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  margin: 10px 0; /* Adjust vertical spacing */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.post img {
+  width: 200px; /* Specific size for each post image */
+  height: 200px;
+  object-fit: cover; /* Maintain aspect ratio and cover */
+  border-radius: 5px 0 0 5px; /* Rounded corners for the left side */
 }
 
-.card {
-  padding: 2em;
+.post-details {
+  flex: 1; /* Take up remaining space */
+  padding: 10px;
 }
 
-.read-the-docs {
-  color: #888;
+.post-user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
+
+.post-user-info img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.post-user-info span {
+  font-weight: 600;
+}
+
+.post-caption {
+  margin-bottom: 10px;
+  font-size: 16px; /* Increase font size */
+}
+
+.post-likes {
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 16px; /* Increase font size */
+}
+
+.post-comments {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.comment {
+  margin: 5px 0;
+  display: flex;
+}
+
+.comment span:first-child {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+/* Add any additional styling you need for your app */

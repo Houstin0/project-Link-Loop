@@ -11,6 +11,7 @@ with app.app_context():
     Post.query.delete()
     Message.query.delete()
     Comment.query.delete()
+    
 
 
     for user in range(20):
@@ -20,7 +21,7 @@ with app.app_context():
             profile_picture_url=fake.image_url()
 
         )
-        new_user.email = f'{new_user.username}@mail.com'
+        new_user.email = f'{new_user.username}@mail.com'z
         db.session.add(new_user)
     db.session.commit()    
 
@@ -31,7 +32,12 @@ with app.app_context():
                 sender_id=user.id
             )
             db.session.add(new_message)
-        db.session.commit()  
+        db.session.commit() 
+        
+    fake.image.url({...}: {
+        height: 300,
+        width: 200
+    } = {}) 
 
     for user in User.query.all():
         for i in range(2):
