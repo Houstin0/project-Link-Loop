@@ -1,68 +1,35 @@
-import { useState } from 'react'
-import './App.css'
-import { useEffect } from 'react'
+import React,{ useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from './components/NavBar';
+import Home from './components/Home';
+import Login from './components/LogIn';
+import Messaging from './components/Messaging'
 
 function App() {
-  const [posts, setPosts] = useState([])
-  const [users,setUsers]=useState([])
-  const [messages,setMessages]=useState([])
-  const [comments,setComments]=useState([])
-  const [visibleComments, setVisibleComments] = useState({})
+  const [user, setUser] = useState(null);
 
-  const toggleComments = (postId) => {
-    setVisibleComments((prev) => ({
-      ...prev,
-      [postId]: !prev[postId],
-    }))
-  }
+  useEffect(() => {
+    fetch("/check_session").then((response) => {
+      if (response.ok) {
+        response.json().then((user) => setUser(user));
+      }
+    });
+  }, []);
 
-
-
-  useEffect(()=>{
-    fetch('api/users').then(res => res.json()).then(data=>setUsers(data))
-    fetch('/api/posts').then(res => res.json()).then(data=>setPosts(data))
-    fetch('api/messages').then(res => res.json()).then(data=>setMessages(data))
-    fetch('api/comments').then(res => res.json()).then(data=>setComments(data))
-  },[])
-
-  return (
+  if (user) {
+    return <h2>Welcome, {user.username}!</h2>;
+  } else {
+  return(
     <>
-      <div className="posts-container">
-        {posts.map((post) => (
-          <div key={post.id} className="post">
-            <img src={post.image_url} alt={post.caption} />
-            <div className="post-details">
-              <div className="post-user-info">
-                <img src={post.user.profile_picture_url} alt={post.user.username} />
-                <span>{post.user.username}</span>
-              </div>
-              <div className="post-caption">{post.caption}</div>
-              <div className="post-likes">
-                <span>{post.likes} likes</span>
-              </div>
-              <div className="post-comments">
-                {comments
-                  .filter((comment) => comment.post_id === post.id)
-                  .slice(0, visibleComments[post.id] ? comments.length : 3)
-                  .map((comment) => (
-                    <div key={comment.id} className="comment">
-                      <span>{comment.user.username}</span>
-                      <span>{comment.text}</span>
-                    </div>
-                  ))}
-              </div>
-              <button onClick={() => toggleComments(post.id)}>
-                {visibleComments[post.id] ? 'Hide Comments' : 'Show More Comments'}
-              </button>
-              <div className='post-date'>
-                <span>{post.created_at}</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <NavBar/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login onLogin={setUser}/>} />
+        <Route path="/messaging" element={<Messaging />} />
+      </Routes>
     </>
-  )
+  )}
 }
 
 export default App
