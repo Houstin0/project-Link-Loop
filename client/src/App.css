@@ -283,3 +283,63 @@ nav input[type="text"]:focus {
   outline: none;
   opacity: 1;
 }
+
+/* Style for the About Page */
+
+/* Container for the entire About page */
+.about-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Title for the About Us section */
+.about-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Introduction text */
+.about-introduction {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Mission section */
+.about-mission {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Who We Are section */
+.about-who-we-are {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+/* Why Choose Our App section */
+.about-why-choose {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+/* Bullet points for Why Choose Our App section */
+.about-bullet-points {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+/* Join Our Community section */
+about-join {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
