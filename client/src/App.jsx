@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Login from './components/LogIn';
 import Messaging from './components/messaging/Messaging'
 import Signup from './components/SignUp'; 
-import Chat from './components/chat/Chat'
+
 
 function App() {
   const [user, setUser] = useState(null);
