@@ -27,12 +27,14 @@ function NavBar({user , onLogout}) {
               <button onClick={onLogout}>Logout</button>
             </li>
           </>
-        ) : (
+        ) 
+        : (
           <li>
             <NavLink to="/signup" className="nav-link" activeClassName="active">
               Sign Up
             </NavLink>
           </li>
+          
         )}
         </ul>
       </div>

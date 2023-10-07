@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react';
 import { Routes, Route,useNavigate } from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+// 
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Login from './components/LogIn';
-import Messaging from './components/Messaging';
+import Messaging from './components/messaging/Messaging'
 import Signup from './components/SignUp'; 
+import Chat from './components/chat/Chat'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,13 +34,13 @@ function App() {
       });
     }
     useEffect(() => {
-      // Make a GET request to check the user's session and update the user state
+      
       fetch('/check_session')
         .then((response) => {
           if (response.ok) {
             return response.json();
           } else {
-            // Handle the case when the user is not authenticated
+
             navigate('/')
             return null
           }
@@ -57,10 +58,10 @@ function App() {
   
     return (
       <>
-        <NavBar user={user} onLogout={handleLogout}/>
+        <NavBar user={user} onLogout={handleLogout} onSignup={handleSignUp}/>
         <Routes>
           <Route path="/home" element={user ? <Home /> : <Login onLogin={handleLogin} />} />
-          <Route path="/messaging" element={user ? <Messaging /> : <Login onLogin={handleLogin} /> } />
+          <Route path="/messaging" element={user ? <Messaging currentUser={user}/> : <Login onLogin={handleLogin} /> } />
           <Route path="/" element={<Login onLogin={handleLogin} />} />
           <Route path="/signup" element={<Signup onSignUp={handleSignUp} />} />
         </Routes>

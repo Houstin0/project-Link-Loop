@@ -15,10 +15,10 @@ db.init_app(app)
 
 api=Api(app)
 
-@app.before_request
-def check_if_logged_in():
-    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup']:
-        return {'error': 'Unauthorized'}, 401
+# @app.before_request
+# def check_if_logged_in():
+#     if session.get('user_id') is None and request.endpoint not in ['/login', '/signup']:
+#         return {'error': 'Unauthorized'}, 401
 
 class Index(Resource):
     def get(self):
@@ -109,7 +109,7 @@ class Users(Resource):
         try:
             if 'user_id' in session:
                 user_id=session['user_id']
-                user=user.query.get(user_id)
+                user=User.query.get(user_id)
                 if user:
                     return make_response(user.to_dict(),200)
             return make_response('User not logged in',401)    

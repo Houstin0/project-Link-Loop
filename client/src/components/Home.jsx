@@ -33,6 +33,7 @@ function Home() {
                 <span>{post.likes} likes</span>
               </div>
               <div className="post-comments">
+              <div className="comments-title">Comments:</div>
                 {comments
                   .filter((comment) => comment.post_id === post.id)
                   .slice(0, visibleComments[post.id] ? comments.length : 3)
@@ -44,7 +45,7 @@ function Home() {
                   ))}
               </div>
               <button onClick={() => toggleComments(post.id)}>
-                {visibleComments[post.id] ? 'Hide Comments' : 'Show More Comments'}
+                {visibleComments[post.id] ? 'Hide' : 'More.....'}
               </button>
               <div className='post-date'>
                 <span>{post.created_at}</span>

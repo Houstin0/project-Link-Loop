@@ -42,7 +42,7 @@ class User(db.Model,SerializerMixin):
 class Message(db.Model,SerializerMixin):
     __tablename__='messages'
 
-    serialize_rules=('user',)
+    serialize_rules=('-user',)
 
     id= db.Column(db.Integer,primary_key=True)
     text= db.Column(db.String)
@@ -50,6 +50,7 @@ class Message(db.Model,SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     sender_id= db.Column(db.Integer,db.ForeignKey('users.id'))
     recipient_id=db.Column(db.Integer)
+    # username=db.Column(db.String)
 
     user = db.relationship('User', back_populates='messages')
 
