@@ -20,6 +20,24 @@ class User(db.Model,SerializerMixin):
 
     def __repr__(self):
         return f"(id={self.id}, username={self.username}, email= {self.email}, profile_picture_url={self.profile_picture_url})"
+    
+    @validates('email')
+    def validate_email(self, key, email):
+        if '@' not in email:
+            raise ValueError("Email must contain '@' symbol")
+        return email
+
+    @validates('username')
+    def validate_username(self, key, username):
+        if ' ' in username:
+            raise ValueError("Username should not contain spaces")
+        return username
+
+    @validates('password')
+    def validate_password(self, key, password):
+        if len(password) < 8:
+            raise ValueError("Password should be at least 8 characters long")
+        return password
 
 class Message(db.Model,SerializerMixin):
     __tablename__='messages'

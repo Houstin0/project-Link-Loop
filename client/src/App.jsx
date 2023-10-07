@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import { Routes, Route,useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Login from './components/LogIn';
@@ -57,7 +57,7 @@ function App() {
   
     return (
       <>
-        <NavBar user={user} onLogout={handleLogout} />
+        <NavBar user={user} onLogout={handleLogout}/>
         <Routes>
           <Route path="/home" element={user ? <Home /> : <Login onLogin={handleLogin} />} />
           <Route path="/messaging" element={user ? <Messaging /> : <Login onLogin={handleLogin} /> } />

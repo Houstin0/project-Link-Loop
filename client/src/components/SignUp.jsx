@@ -7,20 +7,28 @@ function SignUp({ onSignUp }) {
   const [profile_picture_url,setProfilePictureUrl]=useState('')
 
   const handleSignUp = () => {
+    const data = { username, email, password}
+
+    if (profile_picture_url) {
+      data.profile_picture_url = profile_picture_url;
+    }
+
     fetch("/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, email, password,profile_picture_url }),
+      body: JSON.stringify(data),
     })
-      .then((response) => {
-        if (response.status === 201) {
-          onSignUp()
-        } else {
-          alert('Registration failed');
-        }
-      })
+    .then((response) => {
+      if (response.status === 201) {
+        onSignUp();
+      } else {
+        response.json().then(data => {
+          alert(`Registration failed: ${data.error}`);
+        });
+      }
+    })
       .catch((error) => {
         console.error('Registration error:', error);
       });

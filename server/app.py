@@ -3,11 +3,11 @@ from flask_migrate import Migrate
 from flask_restful import Resource,Api
 from models import db,User,Post,Message,Comment
 import bcrypt
-from flask_cors import CORS
+# from flask_cors import CORS
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///link_loop.db'
-app.secret_key=b'\xd9\x0c\xfe&t*\x96\xf5\xdc2XC\xd8M\xe1\xc3'
+app.secret_key='Bad_secret'
 # CORS(app)
 migrate=Migrate(app,db)
 
@@ -19,8 +19,6 @@ api=Api(app)
 def check_if_logged_in():
     if session.get('user_id') is None and request.endpoint not in ['/login', '/signup']:
         return {'error': 'Unauthorized'}, 401
-
-
 
 class Index(Resource):
     def get(self):
@@ -41,12 +39,11 @@ class Signup(Resource):
     def post(self):
         data = request.get_json()
         try:
-            # Check if the username is already taken
             existing_user = User.query.filter_by(username=data['username']).first()
             if existing_user:
                 return jsonify({"error": "Username is already taken"}), 400
 
-            # Hash the user's password before storing it
+            
             password = data.get('password').encode('utf-8')
             hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
 
@@ -70,7 +67,7 @@ class Signup(Resource):
             response_dict = {"error": f"{str(e)}"}
             return make_response(jsonify(response_dict), 500)
 
-api.add_resource(Signup, '/signup')        
+api.add_resource(Signup, '/signup', endpoint='/signup')        
 
 
 class Login(Resource):
@@ -88,7 +85,7 @@ class Login(Resource):
             response_dict = {"error": f"{str(e)}"}
             return make_response(jsonify(response_dict), 500)
     
-api.add_resource(Login, '/login')
+api.add_resource(Login, '/login', endpoint='/login')
 
 class CheckSession(Resource):
     def get(self):
@@ -106,7 +103,6 @@ api.add_resource(CheckSession, '/check_session')
 def logout():
     session['user_id'] = None
     return jsonify({'message': 'Logged out'}), 204
-   
 
 class Users(Resource):
     def get(self):
@@ -125,7 +121,6 @@ class Users(Resource):
     def post(self):
         data = request.get_json()
         try:
-            # Hash the user's password before storing it
             password = data.get('password').encode('utf-8')
             hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
 
