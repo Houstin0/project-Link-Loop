@@ -5,12 +5,28 @@ function Messaging() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesContainerRef = useRef(null);
+  const [user_id, setUserId] = useState(null)
   
-  // Replace this with your actual user ID retrieval method
-  const user_id = 123; // Replace with the user's actual ID
+  function fetchUserData(){
+    fetch('/api/check_session')
+    .then((response)=>{
+      if (response.ok){
+        return response.json()
+      }else{
+        alert ("User not authenticated")
+      }
+    })
+    .then((user)=>{
+      setUserId(user.id);
+    })
+    .catch((error)=>{
+      console.error("User not authenticated:", error)
+    })}
+   
 
   useEffect(() => {
     // Fetch user's messages from the server
+    fetchUserData()
     fetch('/api/messages')
       .then((response) => response.json())
       .then((data) => setMessages(data))
@@ -41,17 +57,38 @@ function Messaging() {
       .catch((error) => console.error('Error sending message:', error));
   };
 
+  const conversations = {};
+
+  // Group messages into conversations
+  messages.forEach((message) => {
+    const otherUserId = message.recipient_id === user_id ? message.sender_id : message.recipient_id;
+
+    if (!conversations[otherUserId]) {
+      conversations[otherUserId] = [];
+    }
+
+    conversations[otherUserId].push(message);
+  });
+
   return (
     <>
-    <h2>Messaging</h2>
-    <div className="message-container" ref={messagesContainerRef}>
-      <div className="message-list">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`message ${message.recipient_id === user_id ? 'received' : 'sent'}`}
-          >
-            <p>{message.text}</p>
+      <h2>Messaging</h2>
+      <div className="message-container" ref={messagesContainerRef}>
+        {Object.keys(conversations).map((otherUserId) => (
+          <div key={otherUserId} className="conversation">
+            <div className="conversation-header">
+              <h3>User {otherUserId}</h3>
+            </div>
+            <div className="conversation-messages">
+              {conversations[otherUserId].map((message) => (
+                <div
+                  key={message.id}
+                  className={`message ${message.recipient_id === user_id ? 'received' : 'sent'}`}
+                >
+                  <p>{message.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
@@ -63,9 +100,9 @@ function Messaging() {
         />
         <button onClick={sendMessage}>Send</button>
       </div>
-    </div>
     </>
   );
 }
 
 export default Messaging;
+

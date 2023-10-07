@@ -2,18 +2,25 @@ from flask import Flask, make_response,jsonify,request,session
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
 from models import db,User,Post,Message,Comment
-from flask_bcrypt import Bcrypt
+import bcrypt
+from flask_cors import CORS
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///link_loop.db'
 app.secret_key=b'\xd9\x0c\xfe&t*\x96\xf5\xdc2XC\xd8M\xe1\xc3'
-
-bcrypt=Bcrypt(app)
+# CORS(app)
 migrate=Migrate(app,db)
 
 db.init_app(app)
 
 api=Api(app)
+
+@app.before_request
+def check_if_logged_in():
+    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup']:
+        return {'error': 'Unauthorized'}, 401
+
+
 
 class Index(Resource):
     def get(self):
@@ -29,39 +36,76 @@ class Index(Resource):
 
 api.add_resource(Index, '/')
 
+
+class Signup(Resource):
+    def post(self):
+        data = request.get_json()
+        try:
+            # Check if the username is already taken
+            existing_user = User.query.filter_by(username=data['username']).first()
+            if existing_user:
+                return jsonify({"error": "Username is already taken"}), 400
+
+            # Hash the user's password before storing it
+            password = data.get('password').encode('utf-8')
+            hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
+
+            new_user = User(
+                username=data.get('username'),
+                email=data.get("email"),
+                password=hashed_password,
+                profile_picture_url=data.get('profile_picture_url')
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+
+            response = make_response(
+                new_user.to_dict(),
+                201
+            )
+            return response
+
+        except Exception as e:
+            response_dict = {"error": f"{str(e)}"}
+            return make_response(jsonify(response_dict), 500)
+
+api.add_resource(Signup, '/signup')        
+
+
 class Login(Resource):
 
-    def post(self):
-        data=request.get_json()
-        username=data.get('username')
-        password=data.get('password')
-
-        user=User.query.filter_by(username=username).first()
-
-        if user and bcrypt.check_password_hash(user.password,password):
-            session['user_id']=user.id
-            return jsonify(user.to_dict()),200
-        else:
-            return jsonify({'message':'Invalid username or password'}),401
+   def post(self):
+        data = request.get_json()
+        try:
+            user = User.query.filter(User.username == data['username'] and User.password==data['password']).first()
+            if user and bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
+                session['user_id'] = user.id
+                return jsonify(user.to_dict())
+            else:
+                return jsonify({"error": "Invalid username or password"}), 401
+        except Exception as e:
+            response_dict = {"error": f"{str(e)}"}
+            return make_response(jsonify(response_dict), 500)
     
 api.add_resource(Login, '/login')
 
 class CheckSession(Resource):
-
     def get(self):
-        user = User.query.filter(User.id == session.get('user_id')).first()
-        if user:
-            return jsonify(user.to_dict())
-        else:
-            return jsonify({'message': '401: Not Authorized'}), 401
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.filter(User.id == user_id).first()
+            if user:
+                return jsonify(user.to_dict())
+        return jsonify({'message': 'Not Authorized'}), 401
 
 api.add_resource(CheckSession, '/check_session')
 
 
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    return make_response('Logged out', 200)
+    session['user_id'] = None
+    return jsonify({'message': 'Logged out'}), 204
    
 
 class Users(Resource):
@@ -81,29 +125,30 @@ class Users(Resource):
     def post(self):
         data = request.get_json()
         try:
-            new_user=User(
+            # Hash the user's password before storing it
+            password = data.get('password').encode('utf-8')
+            hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
+
+            new_user = User(
                 username=data.get('username'),
-                email= data.get("email"),
-                password= data.get("password"),
-            ) 
+                email=data.get("email"),
+                password=hashed_password,
+                profile_picture_url=data.get('profile_picture_url')
+            )
             db.session.add(new_user)
             db.session.commit()
-        
+
             response = make_response(
                 new_user.to_dict(),
-                201 
+                201
             )
             return response
-        
+
         except Exception as e:
-            response_dict = {"error" : f"{str(e)}"}
+            response_dict = {"error": f"{str(e)}"}
             return make_response(jsonify(response_dict), 403)    
         
 api.add_resource(Users,'/users')
-
-
-
-
 class UserByID(Resource):
     def get (self,id):
         try:

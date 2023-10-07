@@ -1,24 +1,11 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function LogIn(){
+function Login({onLogin}){
     const[username,setUsername]=useState("")
     const [password, setPassword] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false);
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-        
-    //     fetch('/api/check_session').then((response) => {
-    //         if (response.ok) {
-    //           setLoggedIn(true); // User is already logged in
-    //         }
-    //       })
-    //   }, []);
-
-
-    function handleLogin(e){
-        e.preventDefault()
+    
+    function handleLogin(){
         fetch("/api/login",{
             method: "POST",
             headers:{
@@ -28,16 +15,32 @@ function LogIn(){
         })
         .then(response=> {
             if (response.status === 200){
-                setLoggedIn(true)
-                navigate('/')
+                fetchUserData()
+                
             }else{
-                alert('Login error')
+                alert('Login failed')
             }
         })
         .catch((error) => {
             console.error('Login error:', error);
           })
-   
+    }
+
+    function fetchUserData(){
+      fetch('/api/check_session')
+      .then((response)=>{
+        if (response.ok){
+          return response.json()
+        }else{
+          alert ("User not authenticated")
+        }
+      })
+      .then((user)=>{
+        onLogin(user)
+      })
+      .catch((error)=>{
+        console.error("User not authenticated:", error)
+      })
     }
     return (
         <div>
@@ -66,9 +69,13 @@ function LogIn(){
                 Login
               </button>
             </div>
+            <div>
+                
+                <Link to="/signup">Sign Up</Link>
+            </div>
           </form>
         </div>
       );
 }
 
-export default LogIn 
+export default Login 

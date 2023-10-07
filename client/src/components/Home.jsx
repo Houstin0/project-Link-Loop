@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import '../App.css'
-import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 function Home() {
   const [posts, setPosts] = useState([])
