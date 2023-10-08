@@ -22,7 +22,7 @@ return (
     {posts.map((post) => (
       <div
         key={post.id}
-        className="custom-max-width p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        className="custom-max-width mb-5 p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
       >
         <div className="flex">
           <div className="w-1/2">

@@ -2,18 +2,14 @@ import React,{useState,useEffect} from "react";
 import Message from "./Message";
 
 
-function MessageList({user,recipientId}) {
-  const [messages,setMessages]=useState([])
+function MessageList({user,recipientId,loadMessages,messages}) {
+  
   const [messageText,setMessageText]=useState('')
 
-  const loadMessages = ()=>{
-    fetch('api//messages?sender_id=${user.id}&recipient_id=${recipientId}')
-    .then(r=>r.json())
-    .then(data=>setMessages(data))
-    .catch((error)=>{
-      console.log('Error loading messages:', error)
-    })
-  }
+
+
+
+ 
   const sendMessage = ()=>{
     fetch("/api/messages", {
       method: "POST",
@@ -35,9 +31,7 @@ function MessageList({user,recipientId}) {
         console.log("Error sending message:", error);
       });
   }
-  useEffect(()=>{
-    loadMessages()
-  },[user.id,recipientId])
+
 
   return (
     <div>

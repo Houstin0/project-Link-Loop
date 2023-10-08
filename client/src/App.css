@@ -1,10 +1,12 @@
 #post_container{
   margin-top: 80px;
   margin-left: 50px;
+ 
   
 }
 #coversations{
   margin-top: 100px;
+  margin-left: 50%;
 }
 .custom-max-width {
   max-width: 550px; 
