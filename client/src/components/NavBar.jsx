@@ -2,50 +2,66 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import '../App.css';
 
-function NavBar({user , onLogout}) {
+function NavBar({user,onLogout}) {
+  function handleLogout() {
+    fetch('/logout', {
+      method: 'DELETE',
+    })
+    .then(() =>onLogout())
+  }
+
+
   return (
-    <nav className="bg-violet dark:bg-violet-900 p-1 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto p-2">
-        <a href="/home" className="flex items-center">
-          <span className="self-center text-xl font-bold whitespace-nowrap dark:text-black">Link Loop</span>
-        </a>
-        <ul className="flex items-center space-x-4 md:space-x-2  text-black ">
-        {user ? (
-          <>
-            <li>
-              <NavLink exact to="/home" className="nav-link" activeClassName="active">
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/messaging" className="nav-link" activeClassName="active">
-                Messages
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/about" className="nav-link" activeClassName="active">
-                About
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/contact" className="nav-link" activeClassName="active">
-                Contact
-              </NavLink>
-            </li>
-            <li>
-              <button onClick={onLogout}>Logout</button>
-            </li>
-          </>
-        ) 
-        : (
-          <li>
-            <NavLink to="/signup" className="nav-link" activeClassName="active">
-              Sign Up
-            </NavLink>
-          </li>
-          
-        )}
+    <nav class="bg-blue border-gray-200 dark:bg-blue-900 max-h-17 pt-0">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-1">
+      <a href="/" class="flex items-center">
+          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Link Loop</span>
+      </a>
+
+      <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 pt-0" id="navbar-user">
+        <ul class="flex flex-col font-medium p-1 md:p-0   bg-blue-50 md:flex-row md:space-x-2 md:mt-0 md:border-0 md:bg-white dark:bg-blue-800 md:dark:bg-blue-900 dark:border-gray-700">
+          {user ? (
+            <>
+              <li>
+                <a href="/" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
+              </li>
+              <li>
+                <a href="/messaging" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Messages</a>
+              </li>
+              <li>
+                <a href="/about" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+              </li>
+              <li>
+                <a href="/contact" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+              </li>
+              <li onClick={handleLogout}>
+                <a href='' class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Log Out</a>
+              </li>
+            </>
+          ):(
+            <>
+              <li>
+                <a href="/signup" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Sign Up</a>
+              </li>
+              <li>
+                <a href="/login" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Log In</a>
+              </li>
+              <li>
+                <a href="/" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
+              </li>
+              <li>
+                <a href="/messaging" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Messages</a>
+              </li>
+              <li>
+                <a href="/about" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+              </li>
+              <li>
+                <a href="/contact" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+              </li>
+            </>
+          )}
         </ul>
+      </div>
       </div>
     </nav>
   );

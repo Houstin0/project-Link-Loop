@@ -15,10 +15,10 @@ db.init_app(app)
 
 api=Api(app)
 
-@app.before_request
-def check_if_logged_in():
-    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup']:
-        return {'error': 'Unauthorized'}, 401
+# @app.before_request
+# def check_if_logged_in():
+#     if session.get('user_id') is None and request.endpoint not in ['/login', '/signup']:
+#         return {'error': 'Unauthorized'}, 401
 
 class Index(Resource):
     def get(self):
@@ -89,23 +89,29 @@ api.add_resource(Login, '/login', endpoint='/login')
 
 class CheckSession(Resource):
     def get(self):
-        user_id = session.get('user_id')
-        if user_id:
-            user = User.query.filter(User.id == user_id).first()
-            if user:
-                return make_response(jsonify(user.to_dict()))
-            else:
-                return make_response(jsonify({'message': 'Not Authorized'}), 401)
+        user = User.query.filter(User.id == session.get('user_id')).first()
+        if user:
+            return jsonify(user.to_dict())
         else:
-            return make_response(jsonify({'message':'not logged in'}))
+            return jsonify({'message': '401: Not Authorized'}), 401 
+            
 
 api.add_resource(CheckSession, '/check_session')
 
 
-@app.route('/logout')
-def logout():
-    session['user_id'] = None
-    return jsonify({'message': 'Logged out'}), 204
+
+class LogOut(Resource):
+    def delete(self):
+        try:
+            session.pop('user_id', None)
+            print(session)
+            return make_response(jsonify({'message': 'Logged out'}), 204)
+        except Exception as e:
+            response_dict = {"error": f"error .{str(e)}"}
+            return make_response(jsonify(response_dict), 500)        
+        
+
+api.add_resource(LogOut, '/logout')
 
 class Users(Resource):
     def get(self):

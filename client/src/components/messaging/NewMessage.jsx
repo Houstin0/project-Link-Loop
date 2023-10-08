@@ -14,7 +14,7 @@ function NewMessage({ currentUser, selectedUser, onAddMessage }) {
         },
         body: JSON.stringify({
           sender_id: currentUser.id,
-          recipient_id: selectedUser.id, // Include recipient_id
+          recipient_id: selectedUser.id,
           text: text,
         }),
       })

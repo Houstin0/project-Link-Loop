@@ -1,5 +1,4 @@
 #post_container{
-  margin-top: 80px;
   margin-left: 50px;
  
   
@@ -9,7 +8,7 @@
   margin-left: 50%;
 }
 .custom-max-width {
-  max-width: 550px; 
+  max-width: 85%; 
 }
 
 
