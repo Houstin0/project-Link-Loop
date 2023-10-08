@@ -4,7 +4,7 @@ import '../App.css';
 
 function NavBar({user , onLogout}) {
   return (
-    <nav className="bg-violet dark:bg-violet-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <nav className="bg-violet dark:bg-violet-900 p-1 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto p-2">
         <a href="/home" className="flex items-center">
           <span className="self-center text-xl font-bold whitespace-nowrap dark:text-black">Link Loop</span>

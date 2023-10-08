@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react"
 
 function Login({onLogin}){
@@ -44,6 +45,9 @@ function Login({onLogin}){
         console.error("User not authenticated:", error)
       })
     }
+    // useEffect(()=>{
+    //   fetchUserData
+    // },[])
 
     return(
         <section className="bg-white-50 dark:bg-black-900">

@@ -36,26 +36,17 @@ function App() {
       });
     }
     useEffect(() => {
-      
-      fetch('/check_session')
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-
-            navigate('/')
-            return null
-          }
-        })
+      fetch('api/check_session')
+        .then((response) =>response.json())
         .then((user) => {
           if (user) {
             setUser(user);
           }
         })
         .catch(() => {
-          console.log('User session check error');
+          alert('User session check error');
         });
-    }, [navigate]);
+    },[]);
   
   
     return (

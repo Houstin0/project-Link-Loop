@@ -1,23 +1,10 @@
-/* body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #fafafa;
-  color: black;
-  justify-content: center;
-} */
-
-/* #posts-container {
-  display: flex;
-  flex-direction: column;
-  max-width: 70%; 
-  padding: 20px;
-  margin-top: 3%;
-} */
 #post_container{
   margin-top: 80px;
   margin-left: 50px;
   
+}
+#coversations{
+  margin-top: 100px;
 }
 .custom-max-width {
   max-width: 550px; 

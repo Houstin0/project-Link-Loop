@@ -93,8 +93,11 @@ class CheckSession(Resource):
         if user_id:
             user = User.query.filter(User.id == user_id).first()
             if user:
-                return jsonify(user.to_dict())
-        return jsonify({'message': 'Not Authorized'}), 401
+                return make_response(jsonify(user.to_dict()))
+            else:
+                return make_response(jsonify({'message': 'Not Authorized'}), 401)
+        else:
+            return make_response(jsonify({'message':'not logged in'}))
 
 api.add_resource(CheckSession, '/check_session')
 
@@ -204,6 +207,8 @@ class UserByID(Resource):
         
 api.add_resource(UserByID,'/users/<int:id>')
 
+
+# messaging routes
 class Messages(Resource):
     def get(self):
         try:
@@ -291,6 +296,56 @@ class MessageByID(Resource):
         
 api.add_resource(MessageByID,'/messages/<int:id>')
 
+class MessagesBetweenUsers(Resource):
+    def get (self):
+        try:
+            sender_id=request.args.get('sender_id')
+            recipient_id=request.args.get('recipient_id')
+
+            messages=Message.query.filter(
+                (Message.sender_id==sender_id) | (Message.recipient_id==sender_id),
+                (Message.sender_id == recipient_id) | (Message.recipient_id == recipient_id)
+            ).order_by(Message.created_at).all()
+
+            message_dicts = [message.to_dict() for message in messages]
+            return make_response(jsonify(message_dicts), 200)
+        except Exception as e:
+            response_dict = {"error": f"An error occurred while fetching messages: {str(e)}"}
+            return make_response(jsonify(response_dict), 500)
+api.add_resource(MessagesBetweenUsers, '/messages_between_users')
+
+class UsersWithMessages(Resource):
+    def get(self):
+        try:
+            user_id = session.get('user_id')
+
+            if user_id:
+                messages = Message.query.filter(
+                    (Message.sender_id == user_id) | (Message.recipient_id == user_id)
+                ).all()
+
+                user_ids = set()
+                for message in messages:
+                    if message.sender_id != user_id:
+                        user_ids.add(message.sender_id)
+                    if message.recipient_id != user_id:
+                        user_ids.add(message.recipient_id)
+
+                users = User.query.filter(User.id.in_(user_ids)).all()
+                user_dicts = [user.to_dict() for user in users]
+
+                return make_response(jsonify(user_dicts))  
+            else:
+                return make_response(jsonify({'message': 'Not authorized'}), 401)
+
+        except Exception as e:
+            response_dict = {"error": f"An error occurred while fetching users with messages: {str(e)}"}
+            return make_response(jsonify(response_dict), 500)
+
+api.add_resource(UsersWithMessages, '/users_with_messages')
+
+
+# post routes
 class Posts(Resource):
     def get(self):
         try:
