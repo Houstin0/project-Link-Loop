@@ -82,7 +82,7 @@ with app.app_context():
             new_post=Post(
                 caption=fake.sentence(),
                 image_url=post,
-                likes=random.randint(1,90),
+                likes=random.randint(1,197),
                 user_id=user.id
             )
             db.session.add(new_post)
@@ -97,3 +97,5 @@ with app.app_context():
             )
             db.session.add(new_comment)
         db.session.commit()    
+
+    print("seeded")    
