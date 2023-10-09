@@ -29,7 +29,7 @@ function NewMessage({ currentUser, selectedUser, onAddMessage }) {
           setText("");
         })
         .catch((error) => {
-          // Handle the error, e.g., show an error message to the user
+        
           console.log("Error:", error);
         });
   }

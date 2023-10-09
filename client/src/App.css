@@ -49,7 +49,7 @@
 }
 
 .post-comments {
-  max-height: 300px;
+  max-height: max-content;
   overflow-y: auto;
 }
 .post-comments button{
@@ -57,14 +57,14 @@
 }
 
 .comment {
-  margin: 5px 0;
+  padding: 2px;
   display: flex;
 }
 
 .comment span:first-child {
   font-weight: 600;
   margin-right: 5px;
-  color: violet;
+  color: rgb(86, 4, 121);
 }
 
 

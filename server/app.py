@@ -1,4 +1,5 @@
 from flask import Flask, make_response,jsonify,request,session
+from sqlalchemy import desc
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
 from models import db,User,Post,Message,Comment
@@ -355,7 +356,7 @@ api.add_resource(UsersWithMessages, '/users_with_messages')
 class Posts(Resource):
     def get(self):
         try:
-            posts=Post.query.all()
+            posts = Post.query.order_by(desc(Post.created_at)).all()
             post_dicts=[post.to_dict() for post in posts]
             return make_response(jsonify(post_dicts),200)
         
@@ -439,6 +440,7 @@ class PostByID(Resource):
             return make_response(jsonify(response_dict), 500)      
         
 api.add_resource(PostByID,'/posts/<int:id>')
+
 
 class Comments(Resource):
     def get(self):

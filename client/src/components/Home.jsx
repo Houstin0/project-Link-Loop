@@ -6,17 +6,96 @@ function Home({user,onLogout}) {
   const [comments,setComments]=useState([])
   const [visibleComments, setVisibleComments] = useState({})
   const [showCreatePost, setShowCreatePost] = useState(false)
+  const [newPost, setNewPost] = useState(''); 
+  const [newImage, setNewImage] = useState('');
 
+
+  useEffect(()=>{
+    fetch('/api/posts').then(res => res.json()).then(data=>setPosts(data))
+    fetch('api/comments').then(res => res.json()).then(data=>setComments(data))
+  },[])
   const toggleComments = (postId) => {
     setVisibleComments((prev) => ({
       ...prev,
       [postId]: !prev[postId],
     }))
+  } 
+
+  const toggleCreatePost = () => {
+    setShowCreatePost((prev) => !prev);
+    setNewPost('')
   }
-  useEffect(()=>{
-    fetch('/api/posts').then(res => res.json()).then(data=>setPosts(data))
-    fetch('api/comments').then(res => res.json()).then(data=>setComments(data))
-  },[])
+
+  function likePost(postId) {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId ? { ...post, likes: post.likes + 1 } : post
+      )
+    )
+    fetch(`/api/posts/{postId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ posts }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      
+    });
+  }
+
+    
+  function createPost() {
+    fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ caption: newPost , image_url :newImage , likes : 0 ,user_id : user.id}),
+    })
+      .then((res) => res.json())
+      .then((newPostData) => {
+        setPosts([newPostData, ...posts ]);
+        setNewPost('')
+        setNewImage('')
+        setShowCreatePost(false)
+      });
+  }
+  function deletePost(postId) {
+    fetch(`/api/posts/${postId}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        setPosts(posts.filter((post) => post.id !== postId));
+      });
+  }
+
+   // Function to create a new comment
+   function createComment(postId, text) {
+    fetch('/api/comments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ post_id: postId, text }),
+    })
+      .then((res) => res.json())
+      .then((newComment) => {
+        setComments([...comments, newComment]);
+      });
+  }
+
+  function deleteComment(commentId) {
+    fetch(`/api/comments/${commentId}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        setComments(comments.filter((comment) => comment.id !== commentId));
+      });
+  }
+
+ 
 
   function handleLogout() {
    fetch("/logout", {
@@ -88,12 +167,12 @@ return (
          <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-black">Home</h2>
          
          </li>
-         <li onClick={() => setShowCreatePost(true)}>
+         <li onClick={toggleCreatePost}>
             <a href="#" class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-               </svg>
-               <span class="flex-1 ml-3 whitespace-nowrap text-black">Create Post</span>
+              <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12V1m0 0L4 5m4-4 4 4m3 5v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
+              </svg>
+               <span class="flex-1 ml-3 whitespace-nowrap text-black">{showCreatePost ? 'Cancel' : 'Create Post'}</span>
             </a>
          </li>
          <li>
@@ -102,6 +181,22 @@ return (
                   <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
                </svg>
                <span class="flex-1 ml-3 whitespace-nowrap text-black">Inbox</span>
+            </a>
+         </li>
+         <li>
+            <a href="/about" class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+               </svg>
+               <span class="flex-1 ml-3 whitespace-nowrap text-black">About</span>
+            </a>
+         </li>
+         <li>
+            <a href="/contact" class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+               </svg>
+               <span class="flex-1 ml-3 whitespace-nowrap text-black">Contact</span>
             </a>
          </li>
          <li>
@@ -134,8 +229,41 @@ return (
    </div>
 </aside>
 
+
+
+
+
 <div class="p-4 sm:ml-64 mt-16">
    <div class="p-1  border-0 border-gray-200 border-solid rounded-lg dark:border-gray-700 ">
+   {showCreatePost && (
+  <section class="bg-violet mt-10 dark:bg-gray-900">
+  <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add a new Post</h2>
+      <form action="/">
+          <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+            
+            
+          <div class="mb-6">
+    <label for="image_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image Url</label>
+    <input onChange={(e) => setNewImage(e.target.value)} value={newImage} type="text" id="image_url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+</div>
+       <div>
+       <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
+              <textarea onChange={(e) => setNewPost(e.target.value)} value={newPost} id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+       </div>
+         
+
+
+          </div>
+          <button onClick={createPost} type="button" class="inline-flex items-left px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-violet-800 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-blue-800">
+              Add Post
+          </button>
+      </form>
+  </div>
+</section>
+)}
+
+
    <div id="post_container">
     {posts.map((post) => (
       <div
@@ -161,6 +289,7 @@ return (
               <div className="post-caption">{post.caption}</div>
               <div className="post-likes">
                 <span>{post.likes} likes</span>
+                <button onClick={() => likePost(post.id)}>Like</button>
               </div>
               <div className="post-comments">
                 <div className="comments-title">comments:</div>
@@ -171,15 +300,19 @@ return (
                     <div key={comment.id} className="comment">
                       <span>{comment.user.username}</span>
                       <span>{comment.text}</span>
+                      <button type="button"  onClick={() => deleteComment(comment.id)} class="text-red-700 hover:text-white  border-red-700 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-1 py-0.5 text-center m-5 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Delete</button>
                     </div>
                   ))}
               </div>
               <button onClick={() => toggleComments(post.id)}>
                 {visibleComments[post.id] ? 'Hide comments..' : 'More comments...'}
               </button>
+              <p class="text-green-500">Add comment</p>
+              
               <div className="post-date">
                 <span>{post.created_at}</span>
               </div>
+              <button type="button" onClick={() => deletePost(post.id)} class="focus:outline-none  text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-2 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete post</button>
             </div>
           </div>
         </div>
@@ -188,6 +321,7 @@ return (
   </div>
   </div>
 </div>
+
 </>
 );
 }
