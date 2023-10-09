@@ -5,6 +5,7 @@ function Home({user,onLogout}) {
   const [posts, setPosts] = useState([])
   const [comments,setComments]=useState([])
   const [visibleComments, setVisibleComments] = useState({})
+  const [showCreatePost, setShowCreatePost] = useState(false)
 
   const toggleComments = (postId) => {
     setVisibleComments((prev) => ({
@@ -45,12 +46,12 @@ return (
       <div class="flex items-center">
           <div class="flex items-center ml-3">
             <div>
-              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user" data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
                 <img class="w-8 h-8 rounded-full" src={user.profile_picture_url} alt="user photo"/>
               </button>
             </div>
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user" data-popper-placement='bottom'>
               <div class="px-4 py-3" role="none">
                 <p class="text-sm text-gray-900 dark:text-white" role="none">
                   {user.username}
@@ -87,20 +88,20 @@ return (
          <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-black">Home</h2>
          
          </li>
+         <li onClick={() => setShowCreatePost(true)}>
+            <a href="#" class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                  <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
+               </svg>
+               <span class="flex-1 ml-3 whitespace-nowrap text-black">Create Post</span>
+            </a>
+         </li>
          <li>
             <a href="/messaging" class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                   <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
                </svg>
                <span class="flex-1 ml-3 whitespace-nowrap text-black">Inbox</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-               </svg>
-               <span class="flex-1 ml-3 whitespace-nowrap text-black">Users</span>
             </a>
          </li>
          <li>
@@ -133,8 +134,8 @@ return (
    </div>
 </aside>
 
-<div class="p-4 sm:ml-64">
-   <div class="p-1 border-2 border-gray-200 border-solid rounded-lg dark:border-gray-700 ">
+<div class="p-4 sm:ml-64 mt-16">
+   <div class="p-1  border-0 border-gray-200 border-solid rounded-lg dark:border-gray-700 ">
    <div id="post_container">
     {posts.map((post) => (
       <div

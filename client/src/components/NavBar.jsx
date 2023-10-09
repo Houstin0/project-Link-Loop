@@ -12,14 +12,14 @@ function NavBar({user,onLogout}) {
 
 
   return (
-    <nav class="bg-blue border-gray-200 dark:bg-blue-900 max-h-17 pt-0">
+    <nav class="fixed top-0 z-50 w-full bg-violet border-b border-gray-200 dark:bg-violet-800 dark:border-gray-700">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-1">
       <a href="/" class="flex items-center">
-          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Link Loop</span>
+          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">Link Loop</span>
       </a>
 
       <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 pt-0" id="navbar-user">
-        <ul class="flex flex-col font-medium p-1 md:p-0   bg-blue-50 md:flex-row md:space-x-2 md:mt-0 md:border-0 md:bg-white dark:bg-blue-800 md:dark:bg-blue-900 dark:border-gray-700">
+        <ul class="flex flex-col font-medium p-1 md:p-0   bg-violet-50 md:flex-row md:space-x-2 md:mt-0 md:border-0 md:bg-white dark:bg-violet-800 md:dark:bg-violet-800 dark:border-gray-700">
           {user ? (
             <>
               <li>
@@ -37,6 +37,10 @@ function NavBar({user,onLogout}) {
               <li onClick={handleLogout}>
                 <a href='' class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Log Out</a>
               </li>
+              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src={user.profile_picture_url} alt="user photo"/>
+              </button>
             </>
           ):(
             <>

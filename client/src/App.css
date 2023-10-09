@@ -80,19 +80,7 @@
   padding: 0;
 }
 
-main {
-  display: grid;
-  max-width: 400px;
-  height: 500px;
-  margin: 100px auto;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr auto;
-  color: var(--main-font-color);
-  background-color: var(--bg-color-1);
-  transition: all 0.5s;
-  box-shadow: 5px 5px 15px -6px #8c8c8c;
-  background-color: rgb(112, 15, 112);
-}
+
 
 .highlight {
   border: 6px solid red;
