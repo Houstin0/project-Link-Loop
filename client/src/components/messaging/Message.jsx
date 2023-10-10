@@ -25,8 +25,8 @@ function Message({ message, currentUser, onMessageDelete, onUpdateMessage }) {
 
   return (
     <li>
-      <span className="user">{username}</span>
-      <span className="time">{timestamp}</span>
+      <span class="user">{username}</span>
+      <span class="time">{timestamp}</span>
       {isEditing ? (
         <EditMessage
           id={id}
@@ -37,7 +37,7 @@ function Message({ message, currentUser, onMessageDelete, onUpdateMessage }) {
         <p>{text}</p>
       )}
       {isCurrentUser ? (
-        <div className="actions">
+        <div class="actions">
           <button onClick={() => setIsEditing((isEditing) => !isEditing)}>
             <span role="img" aria-label="edit">
               ✏️

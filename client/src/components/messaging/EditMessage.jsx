@@ -20,7 +20,7 @@ function EditMessage({ id, text, onUpdateMessage }) {
   }
 
   return (
-    <form className="edit-message" onSubmit={handleFormSubmit}>
+    <form class="edit-message" onSubmit={handleFormSubmit}>
       <input
         type="text"
         name="body"

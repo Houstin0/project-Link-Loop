@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp({ onSignUp }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [profile_picture_url,setProfilePictureUrl]=useState('')
+  const navigate = useNavigate()
 
   const handleSignUp = () => {
     const data = { username, email, password}
@@ -23,7 +25,7 @@ function SignUp({ onSignUp }) {
     .then((response) => {
       if (response.status === 201) {
         onSignUp();
-        navigator('/')
+        
       } else {
         response.json().then(data => {
           alert(`Registration failed: ${data.error}`);

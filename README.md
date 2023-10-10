@@ -1,11 +1,12 @@
 # project-Link-Loop
 
 ## Description 
-Link loop is a web application designed to Cconnect users to others.It aims to provide a platform where users can connect,share moments, and explore a world of visual stories.
+Link loop is a web application designed to connect users to other users.It aims to provide a platform where users can connect,message,share moments, and explore a world of visual stories.
 
 ## Features
 - User Registration: Users can sign up for an account, providing their username, email, and password.
-- Users can view posts and send messages
+- Users can view posts and post their own post using an image link
+- users can send messages
 
 ## Technologies Used
 

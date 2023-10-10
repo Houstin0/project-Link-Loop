@@ -2,16 +2,22 @@ from app import app
 from models import db,User,Post,Message,Comment
 import random
 from faker import Faker
+from werkzeug.security import generate_password_hash
 
 fake = Faker()
 
 with app.app_context():
 
-    # User.query.delete()
-    Post.query.delete()
-    Message.query.delete()
     Comment.query.delete()
     db.session.commit()
+
+
+    Post.query.delete()
+    db.session.commit()
+
+    Message.query.delete()
+    db.session.commit()
+
 
 
     profile_picture_urls=["https://i.pinimg.com/236x/9a/dd/9e/9add9e992ea4ceff5beaf6bc3ecede1e.jpg",
@@ -20,10 +26,6 @@ with app.app_context():
                          "https://i.pinimg.com/236x/cd/df/aa/cddfaac6e5243036f2e250f7c4938bb0.jpg",
                          "https://i.pinimg.com/236x/58/e1/eb/58e1ebff225cff925604b62c7e4392c3.jpg",
 
-                         "https://i.pinimg.com/236x/d6/f0/88/d6f08822c415c51f13d967f7ab5343e9.jpg",
-                         "https://i.pinimg.com/236x/d5/e9/0f/d5e90ff56f7e3db5ddea648b26647d2d.jpg",
-                         "https://i.pinimg.com/236x/bf/a4/7f/bfa47f703fbdd16b2ce2d7013b07371b.jpg",
-                         "https://i.pinimg.com/236x/4a/4a/4a/4a4a4a7f4faa32b85cbc4e9f60700c30.jpg",
                          ]
     post_pics=["https://i.pinimg.com/236x/5d/86/cf/5d86cf1e68a1d4c30b17fb032c53ec59.jpg",
                "https://i.pinimg.com/236x/22/b8/4e/22b84ea0eb65f205e60d3aa452dc756f.jpg",
@@ -51,19 +53,22 @@ with app.app_context():
                "https://i.pinimg.com/236x/b7/d5/4c/b7d54cbc102493c40a279a5902eeae5a.jpg",
                "https://i.pinimg.com/236x/97/bf/53/97bf53601f15310119ebf93662845a83.jpg"]
     
+
+    usernames=["houstin","herbo","mr.plug","mary_jane","nicole"]
     passwords=["killcode"]
 
 
     # for picture in profile_picture_urls:
-    #     new_user=User(
-    #         username=fake.unique.first_name(),
-    #         password=random.choice(passwords),
-    #         profile_picture_url=picture
-
-    #     )
-    #     new_user.email = f'{new_user.username}@mail.com'
-    #     db.session.add(new_user)
-    # db.session.commit()  
+    #     for username in usernames:
+    #         new_user = User(
+    #             username=username,
+    #             password=generate_password_hash(random.choice(passwords)), 
+    #             profile_picture_url=picture
+    #         )
+    #         new_user.email = f'{fake.name()}@mail.com'
+    #         db.session.add(new_user)
+    # db.session.commit()
+ 
 
     for user in User.query.all():
         for recipient in User.query.all():

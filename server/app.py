@@ -4,10 +4,13 @@ from flask_migrate import Migrate
 from flask_restful import Resource,Api
 from models import db,User,Post,Message,Comment
 import bcrypt
+import os
 # from flask_cors import CORS
+from dotenv import load_dotenv
+load_dotenv()
 
 app=Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///link_loop.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.secret_key='Bad_secret'
 # CORS(app)
 migrate=Migrate(app,db)
@@ -18,7 +21,7 @@ api=Api(app)
 
 @app.before_request
 def check_if_logged_in():
-    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup']:
+    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session']:
         return {'error': 'Unauthorized'}, 401
 
 class Index(Resource):
@@ -42,7 +45,7 @@ class Signup(Resource):
         try:
             existing_user = User.query.filter_by(username=data['username']).first()
             if existing_user:
-                return jsonify({"error": "Username is already taken"}), 400
+                return make_response(jsonify({"error": "Username is already taken"}), 400)
 
             
             password = data.get('password').encode('utf-8')
@@ -58,10 +61,7 @@ class Signup(Resource):
             db.session.commit()
             session['user_id'] = new_user.id
 
-            response = make_response(
-                new_user.to_dict(),
-                201
-            )
+            response = make_response(jsonify(new_user.to_dict()),201)
             return response
 
         except Exception as e:
@@ -79,7 +79,7 @@ class Login(Resource):
             user = User.query.filter(User.username == data['username'] and User.password==data['password']).first()
             if user and bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
                 session['user_id'] = user.id
-                return jsonify(user.to_dict())
+                return make_response(jsonify(user.to_dict()))
             else:
                 return jsonify({"error": "Invalid username or password"}), 401
         except Exception as e:
@@ -92,9 +92,9 @@ class CheckSession(Resource):
     def get(self):
         user = User.query.filter(User.id == session.get('user_id')).first()
         if user:
-            return jsonify(user.to_dict())
+            return make_response(jsonify(user.to_dict()))
         else:
-            return jsonify({'message': '401: Not Authorized'}), 401 
+            return make_response(jsonify({'message': '401: Not Authorized'}), 401) 
             
 
 api.add_resource(CheckSession, '/check_session')
@@ -121,7 +121,7 @@ class Users(Resource):
                 user_id=session['user_id']
                 user=User.query.get(user_id)
                 if user:
-                    return make_response(user.to_dict(),200)
+                    return make_response(jsonify(user.to_dict()),200)
             return make_response('User not logged in',401)    
         
         except Exception as e:
@@ -143,10 +143,7 @@ class Users(Resource):
             db.session.add(new_user)
             db.session.commit()
 
-            response = make_response(
-                new_user.to_dict(),
-                201
-            )
+            response = make_response(jsonify(new_user.to_dict()),201)
             return response
 
         except Exception as e:
@@ -203,7 +200,7 @@ class UserByID(Resource):
                 db.session.delete(user)
                 db.session.commit()
 
-                return make_response('User deleted successfully', 204)
+                return make_response(jsonify('User deleted successfully'), 204)
             else:
                 response_dict = {"error": "User not found"}
                 return make_response(jsonify(response_dict), 404)
@@ -238,10 +235,7 @@ class Messages(Resource):
             db.session.add(new_message)
             db.session.commit()
         
-            response = make_response(
-                new_message.to_dict(),
-                201 
-            )
+            response = make_response(jsonify(new_message.to_dict()),201)
             return response
         
         except Exception as e:
@@ -292,7 +286,7 @@ class MessageByID(Resource):
                 db.session.delete(message)
                 db.session.commit()
 
-                return make_response('Message deleted successfully', 204)
+                return make_response(jsonify('Message deleted successfully'), 204)
             else:
                 response_dict = {"error": "Message not found"}
                 return make_response(jsonify(response_dict), 404)
@@ -376,10 +370,7 @@ class Posts(Resource):
             db.session.add(new_post)
             db.session.commit()
         
-            response = make_response(
-                new_post.to_dict(),
-                201 
-            )
+            response = make_response(jsonify(new_post.to_dict()),201)
             return response
         
         except Exception as e:
@@ -430,7 +421,7 @@ class PostByID(Resource):
                 db.session.delete(post)
                 db.session.commit()
 
-                return make_response('Post deleted successfully', 204)
+                return make_response(jsonify('Post deleted successfully'), 204)
             else:
                 response_dict = {"error": "post not found"}
                 return make_response(jsonify(response_dict), 404)
@@ -464,10 +455,7 @@ class Comments(Resource):
             db.session.add(new_comment)
             db.session.commit()
         
-            response = make_response(
-                new_comment.to_dict(),
-                201 
-            )
+            response = make_response(jsonify(new_comment.to_dict()),201)
             return response
         
         except Exception as e:
@@ -517,7 +505,7 @@ class CommentByID(Resource):
             if comment:       
                 db.session.delete(comment)
                 db.session.commit()
-                return make_response('comment deleted successfully', 204)
+                return make_response(jsonify('comment deleted successfully'), 204)
             else:
                 response_dict = {"error": "comment not found"}
                 return make_response(jsonify(response_dict), 404)

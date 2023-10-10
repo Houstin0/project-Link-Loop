@@ -1,8 +1,8 @@
 """create tables
 
-Revision ID: cbc2a9bfea56
+Revision ID: 6100227351fe
 Revises: 
-Create Date: 2023-10-06 09:00:36.242927
+Create Date: 2023-10-10 03:50:55.568587
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cbc2a9bfea56'
+revision = '6100227351fe'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,7 +31,7 @@ def upgrade():
     op.create_table('messages',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('sender_id', sa.Integer(), nullable=True),
     sa.Column('recipient_id', sa.Integer(), nullable=True),
@@ -43,7 +43,7 @@ def upgrade():
     sa.Column('image_url', sa.String(), nullable=True),
     sa.Column('caption', sa.String(), nullable=True),
     sa.Column('likes', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -52,7 +52,7 @@ def upgrade():
     op.create_table('comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('post_id', sa.Integer(), nullable=True),

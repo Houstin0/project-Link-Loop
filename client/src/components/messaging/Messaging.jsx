@@ -53,11 +53,9 @@ function Messaging({currentUser}) {
       </ul>
    </div>
 </aside>
-<div id="coversations">
-   
     
       {recipientId && <MessageList user={currentUser} recipientId={recipientId} loadMessages={loadMessages} messages={messages} />}
-    </div>
+    
 
 
 

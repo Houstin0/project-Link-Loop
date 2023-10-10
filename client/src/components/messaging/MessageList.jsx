@@ -32,18 +32,18 @@ function MessageList({ user, recipientId, loadMessages, messages }) {
   }, [messages]);
 
   return (
-    <div className="message-container">
-      <div className="messages" ref={messagesContainerRef}>
+    <div class="message-container">
+      <div class="messages" ref={messagesContainerRef}>
       <ul>
         {messages.map((message) => (
-          <li key={message.id} className={message.sender_id === user.id ? "sent" : "received"}>
-            <span className="user">{message.sender_id === user.id ? "You" : message.sender_name}:</span> {message.text}
-            <span className="time">{message.created_at}</span>
+          <li key={message.id} class={message.sender_id === user.id ? "sent" : "received"}>
+            <span class="user">{message.sender_id === user.id ? "You" : message.sender_name}:</span> {message.text}
+            <span class="time">{message.created_at}</span>
           </li>
         ))}
       </ul>
     </div>  
-      <form className="new-message" onSubmit={(e) => e.preventDefault()}>
+      <form class="new-message" onSubmit={(e) => e.preventDefault()}>
         <input
           type="text"
           value={messageText}
