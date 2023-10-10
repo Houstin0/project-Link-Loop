@@ -12,11 +12,11 @@ with app.app_context():
     db.session.commit()
 
 
-    Post.query.delete()
-    db.session.commit()
+    # Post.query.delete()
+    # db.session.commit()
 
-    Message.query.delete()
-    db.session.commit()
+    # Message.query.delete()
+    # db.session.commit()
 
 
 
@@ -70,28 +70,28 @@ with app.app_context():
     # db.session.commit()
  
 
-    for user in User.query.all():
-        for recipient in User.query.all():
-            new_message=Message(
-                text=fake.sentence(),
-                sender_id=user.id,
-                recipient_id=recipient.id
-            )
-            db.session.add(new_message)
-        db.session.commit() 
+    # for user in User.query.all():
+    #     for recipient in User.query.all():
+    #         new_message=Message(
+    #             text=fake.sentence(),
+    #             sender_id=user.id,
+    #             recipient_id=recipient.id
+    #         )
+    #         db.session.add(new_message)
+    #     db.session.commit() 
         
 
 
-    for user in User.query.all():
-        for post in post_pics:
-            new_post=Post(
-                caption=fake.sentence(),
-                image_url=post,
-                likes=random.randint(1,197),
-                user_id=user.id
-            )
-            db.session.add(new_post)
-        db.session.commit()   
+    # for user in User.query.all():
+    #     for post in post_pics:
+    #         new_post=Post(
+    #             caption=fake.sentence(),
+    #             image_url=post,
+    #             likes=random.randint(1,197),
+    #             user_id=user.id
+    #         )
+    #         db.session.add(new_post)
+    #     db.session.commit()   
 
     for post in Post.query.all():
         for user in User.query.all():

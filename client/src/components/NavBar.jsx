@@ -14,7 +14,7 @@ function NavBar({user,onLogout}) {
   return (
     <nav class="fixed top-0 z-50 w-full bg-violet border-b border-gray-200 dark:bg-violet-800 dark:border-gray-700">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-1">
-      <a href="/" class="flex items-center">
+      <a href="/home" class="flex items-center">
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">Link Loop</span>
       </a>
 
@@ -48,7 +48,7 @@ function NavBar({user,onLogout}) {
                 <a href="/signup" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Sign Up</a>
               </li>
               <li>
-                <a href="/" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Log In</a>
+                <a href="/login" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Log In</a>
               </li>
               <li>
                 <a href="/home" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>

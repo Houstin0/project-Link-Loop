@@ -19,10 +19,10 @@ db.init_app(app)
 
 api=Api(app)
 
-# @app.before_request
-# def check_if_logged_in():
-#     if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session',"/"]:
-#         return {'error': 'Unauthorized'}, 401
+@app.before_request
+def check_if_logged_in():
+    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session',"/"]:
+        return {'error': 'Unauthorized'}, 401
 
 class Index(Resource):
     def get(self):
@@ -36,7 +36,7 @@ class Index(Resource):
             response_dict = {"error": f"An error occurred.{str(e)}"}
             return make_response(jsonify(response_dict), 500)
 
-api.add_resource(Index, '/')
+api.add_resource(Index, '/',endpoint='/')
 
 
 class Signup(Resource):
