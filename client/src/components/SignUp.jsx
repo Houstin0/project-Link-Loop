@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 function SignUp({ onSignUp }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [profile_picture_url,setProfilePictureUrl]=useState('')
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleSignUp = () => {
     const data = { username, email, password}

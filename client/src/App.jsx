@@ -53,9 +53,9 @@ function App() {
       <>
         <NavBar user={user} onLogout={handleLogout} onSignup={handleSignUp}/>
         <Routes>
-          <Route path="/" element={user ? <Home user={user} onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} />
+          <Route path="/home" element={user ? <Home user={user} onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} />
           <Route path="/messaging" element={user ? <Messaging currentUser={user}/> : <Login onLogin={handleLogin} /> } />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/" element={<Login onLogin={handleLogin} />} />
           <Route path="/signup" element={<Signup onSignUp={handleSignUp} />} />
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
