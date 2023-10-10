@@ -21,7 +21,7 @@ api=Api(app)
 
 @app.before_request
 def check_if_logged_in():
-    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session']:
+    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session',"/"]:
         return {'error': 'Unauthorized'}, 401
 
 class Index(Resource):
