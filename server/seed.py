@@ -8,8 +8,8 @@ fake = Faker()
 
 with app.app_context():
 
-    Comment.query.delete()
-    db.session.commit()
+    # Comment.query.delete()
+    # db.session.commit()
 
 
     # Post.query.delete()
@@ -92,7 +92,7 @@ with app.app_context():
     #         )
     #         db.session.add(new_post)
     #     db.session.commit()   
-
+    print("seeding comment")
     for post in Post.query.all():
         for user in User.query.all():
             new_comment=Comment(
