@@ -11,7 +11,7 @@ load_dotenv()
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
-app.secret_key='Bad_secret'
+app.secret_key = 'BAD_SECRET_KEY'
 # CORS(app)
 migrate=Migrate(app,db)
 
@@ -21,7 +21,7 @@ api=Api(app)
 
 @app.before_request
 def check_if_logged_in():
-    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session']:
+    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session','/']:
         return {'error': 'Unauthorized'}, 401
 
 class Index(Resource):
@@ -36,7 +36,7 @@ class Index(Resource):
             response_dict = {"error": f"An error occurred.{str(e)}"}
             return make_response(jsonify(response_dict), 500)
 
-api.add_resource(Index, '/')
+api.add_resource(Index, '/', endpoint='/')
 
 
 class Signup(Resource):
