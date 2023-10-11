@@ -1,2 +1,2 @@
 web: PORT=4000 npm start --prefix client
-api:gunicorn --chdir server app:app
+api: gunicorn --chdir ./server app:app

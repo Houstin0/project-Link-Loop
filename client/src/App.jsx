@@ -17,12 +17,12 @@ function App() {
 
   const handleSignUp = (userData) => {
     setUser(userData)
-    navigate('/home')
+    navigate('/')
   };
 
   const handleLogin = (userData) => {
     setUser(userData);
-    navigate('/home') 
+    navigate('/') 
   };
   const handleLogout = () => {
     console.log('Logging out from app');
@@ -53,7 +53,7 @@ function App() {
       <>
         <NavBar user={user} onLogout={handleLogout} onSignup={handleSignUp}/>
         <Routes>
-          <Route path="/home" element={user ? <Home user={user} onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} />
+          <Route path="/" element={user ? <Home user={user} onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} />
           <Route path="/messaging" element={user ? <Messaging currentUser={user}/> : <Login onLogin={handleLogin} /> } />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/signup" element={<Signup onSignUp={handleSignUp} />} />
