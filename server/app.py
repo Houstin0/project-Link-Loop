@@ -30,7 +30,12 @@ api=Api(app)
 #         return {'error': 'Unauthorized'}, 401
 
 @app.route('/', endpoint='/')
-@app.route('/<int:id>',endpoint='/<int:id>')
+@app.route('/messaging', endpoint='/messaging')
+@app.route('/about', endpoint='/about')
+@app.route('/contact', endpoint='/contact')
+@app.route('/login')
+@app.route('/signup')
+@app.route('/<int:id>')
 def index():
     return render_template("index.html")
 
