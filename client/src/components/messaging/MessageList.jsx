@@ -6,7 +6,7 @@ function MessageList({ user, recipientId, loadMessages, messages }) {
   const messagesContainerRef = useRef();
 
   const sendMessage = () => {
-    fetch("/api/messages", {
+    fetch("/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

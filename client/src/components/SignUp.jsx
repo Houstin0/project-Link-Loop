@@ -15,7 +15,7 @@ function SignUp({ onSignUp }) {
       data.profile_picture_url = profile_picture_url;
     }
 
-    fetch("/api/signup", {
+    fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

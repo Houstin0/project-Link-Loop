@@ -26,7 +26,7 @@ function App() {
   };
   const handleLogout = () => {
     console.log('Logging out from app');
-    fetch('/api/logout', {
+    fetch('/logout', {
       method: 'DELETE',
     })
       .then(() => {
@@ -38,7 +38,7 @@ function App() {
       });
   };
   useEffect(() => {
-    fetch("/api/check_session")
+    fetch("/check_session")
     .then((response) => {
       if (response.ok) {
         response.json().then((user) => setUser(user));

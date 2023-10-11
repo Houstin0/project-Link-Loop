@@ -11,8 +11,8 @@ function Home({user,onLogout}) {
 
 
   useEffect(()=>{
-    fetch('/api/posts').then(res => res.json()).then(data=>setPosts(data))
-    fetch('/api/comments').then(res => res.json()).then(data=>setComments(data))
+    fetch('/posts').then(res => res.json()).then(data=>setPosts(data))
+    fetch('/comments').then(res => res.json()).then(data=>setComments(data))
   },[])
   const toggleComments = (postId) => {
     setVisibleComments((prev) => ({
@@ -32,7 +32,7 @@ function Home({user,onLogout}) {
         post.id === postId ? { ...post, likes: post.likes + 1 } : post
       )
     )
-    fetch(`/api/posts/{postId}`, {
+    fetch(`/posts/{postId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ function Home({user,onLogout}) {
 
     
   function createPost() {
-    fetch('/api/posts', {
+    fetch('/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ function Home({user,onLogout}) {
       });
   }
   function deletePost(postId) {
-    fetch(`/api/posts/${postId}`, {
+    fetch(`/posts/${postId}`, {
       method: 'DELETE',
     })
       .then(() => {
@@ -87,7 +87,7 @@ function Home({user,onLogout}) {
   // }
 
   function deleteComment(commentId) {
-    fetch(`/api/comments/${commentId}`, {
+    fetch(`/comments/${commentId}`, {
       method: 'DELETE',
     })
       .then(() => {

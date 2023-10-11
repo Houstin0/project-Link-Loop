@@ -1,4 +1,4 @@
-from flask import Flask, make_response,jsonify,request,session
+from flask import Flask,render_template, make_response,jsonify,request,session
 from sqlalchemy import desc
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
@@ -9,7 +9,11 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-app=Flask(__name__)
+app=Flask(__name__,
+    static_url_path='',
+    static_folder='../client/dist',
+    template_folder='../client/dist')
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.secret_key = 'BAD_SECRET_KEY'
 # CORS(app)
@@ -19,24 +23,32 @@ db.init_app(app)
 
 api=Api(app)
 
-@app.before_request
-def check_if_logged_in():
-    if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session','/']:
-        return {'error': 'Unauthorized'}, 401
 
-class Index(Resource):
-    def get(self):
-        try:
-            response_dict = {
-                "index": "Welcome to the link loop RESTful API",
-            }
-            return make_response(jsonify(response_dict), 200)
+# @app.before_request
+# def check_if_logged_in():
+#     if session.get('user_id') is None and request.endpoint not in ['/login', '/signup','/check_session','/','/<int:id>]:
+#         return {'error': 'Unauthorized'}, 401
+
+@app.route('/', endpoint='/')
+@app.route('/<int:id>',endpoint='/<int:id>')
+def index():
+    return render_template("index.html")
+
+
+
+# class Index(Resource):
+#     def get(self):
+#         try:
+#             response_dict = {
+#                 "index": "Welcome to the link loop RESTful API",
+#             }
+#             return make_response(jsonify(response_dict), 200)
             
-        except Exception as e:
-            response_dict = {"error": f"An error occurred.{str(e)}"}
-            return make_response(jsonify(response_dict), 500)
+#         except Exception as e:
+#             response_dict = {"error": f"An error occurred.{str(e)}"}
+#             return make_response(jsonify(response_dict), 500)
 
-api.add_resource(Index, '/', endpoint='/')
+# api.add_resource(Index, '/', endpoint='/')
 
 
 class Signup(Resource):
@@ -90,12 +102,15 @@ api.add_resource(Login, '/login', endpoint='/login')
 
 class CheckSession(Resource):
     def get(self):
-        user = User.query.filter(User.id == session.get('user_id')).first()
-        if user:
-            return make_response(jsonify(user.to_dict()))
-        else:
-            return make_response(jsonify({'message': '401: Not Authorized'}), 401) 
-            
+        try:
+            user = User.query.filter(User.id == session.get('user_id')).first()
+            if user:
+                return make_response(jsonify(user.to_dict()))
+            else:
+                return make_response(jsonify({'message': '401: Not Authorized'}), 401) 
+        except Exception as e:
+            response_dict = {"error": f"{str(e)}"}
+            return make_response(jsonify(response_dict), 404)        
 
 api.add_resource(CheckSession, '/check_session')
 

@@ -10,7 +10,7 @@ function Messaging({currentUser}) {
   const [messages,setMessages]=useState([])
 
   const loadMessages = ()=>{
-    fetch('api/messages?sender_id=${user.id}&recipient_id=${recipientId}')
+    fetch('/messages?sender_id=${user.id}&recipient_id=${recipientId}')
     .then(r=>r.json())
     .then(data=>setMessages(data))
     .catch((error)=>{
@@ -19,7 +19,7 @@ function Messaging({currentUser}) {
   }
 
   useEffect(()=>{
-    fetch('api/users_with_messages')
+    fetch('/users_with_messages')
     .then(r=>r.json())
     .then(data=>setRecipients(data))
     loadMessages()

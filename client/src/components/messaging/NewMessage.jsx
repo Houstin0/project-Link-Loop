@@ -7,7 +7,7 @@ function NewMessage({ currentUser, selectedUser, onAddMessage }) {
     e.preventDefault();
 
 
-    fetch("/api/messages", {
+    fetch("/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
