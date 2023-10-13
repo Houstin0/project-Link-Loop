@@ -37,9 +37,15 @@ function NavBar({user,onLogout}) {
               <li onClick={handleLogout}>
                 <a href='' class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Log Out</a>
               </li>
+
               <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">Open user menu</span>
-                <img class="w-8 h-8 rounded-full" src={user.profile_picture_url} alt="user photo"/>
+                {user && user.profile_picture_url ? (
+                 <img class="w-8 h-8 rounded-full" src={user.profile_picture_url} alt="user photo"/>
+                ) : (
+                  <img class="w-8 h-8 rounded-full" src="https://i.pinimg.com/236x/1e/d3/d3/1ed3d3ede778506de6edade417cce3e0.jpg" alt="user photo"/>
+                )}
+                
               </button>
             </>
           ):(

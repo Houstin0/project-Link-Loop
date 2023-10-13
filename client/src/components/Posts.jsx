@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react'
 import '../App.css'
 
-function Home({user,onLogout}) {
+function Posts({user,onLogout}) {
   const [posts, setPosts] = useState([])
   const [comments,setComments]=useState([])
   const [visibleComments, setVisibleComments] = useState({})
@@ -47,48 +47,28 @@ function Home({user,onLogout}) {
 
     
   function createPost() {
-    if (user) {
-      // User is authenticated, allow post creation
-      fetch('/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          caption: newPost,
-          image_url: newImage,
-          likes: 0,
-          user_id: user.id,
-        }),
-      })
-        .then((res) => res.json())
-        .then((newPostData) => {
-          setPosts([newPostData, ...posts]);
-          setNewPost('');
-          setNewImage('');
-          setShowCreatePost(false);
-        });
-    } else {
-      // User is not authenticated, you can show an error message or redirect to the login page
-      console.log('You need to be logged in to create a post.');
-    }
+    fetch('/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ caption: newPost , image_url :newImage , likes : 0 ,user_id : user.id}),
+    })
+      .then((res) => res.json())
+      .then((newPostData) => {
+        setPosts([newPostData, ...posts ]);
+        setNewPost('')
+        setNewImage('')
+        setShowCreatePost(false)
+      });
   }
-  
   function deletePost(postId) {
-    // Check if the logged-in user is the creator of the post
-    const postToDelete = posts.find((post) => post.id === postId);
-
-    if (user && postToDelete && user.id === postToDelete.user_id) {
-      fetch(`/posts/${postId}`, {
-        method: 'DELETE',
-      })
-        .then(() => {
-          setPosts(posts.filter((post) => post.id !== postId));
-        });
-    } else {
-      // Handle unauthorized deletion, e.g., show an error message.
-      console.log("You are not authorized to delete this post.");
-    }
+    fetch(`/posts/${postId}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        setPosts(posts.filter((post) => post.id !== postId));
+      });
   }
 
   //  // Function to create a new comment
@@ -117,11 +97,7 @@ function Home({user,onLogout}) {
 
  
 
-  function handleLogout() {
-   fetch("/logout", {
-     method: "DELETE",
-   }).then(() => onLogout());
- }
+
 
 return (
   
@@ -145,32 +121,18 @@ return (
       <div class="flex items-center">
           <div class="flex items-center ml-3">
             <div>
-            <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user" data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
-                {user && user.profile_picture_url ? (
-                 <img class="w-8 h-8 rounded-full" src={user.profile_picture_url} alt="user photo"/>
-                ) : (
-                  <img class="w-8 h-8 rounded-full" src="https://i.pinimg.com/236x/1e/d3/d3/1ed3d3ede778506de6edade417cce3e0.jpg" alt="user photo"/>
-                )}
-                
+                <img class="w-8 h-8 rounded-full" src={user.profile_picture_url} alt="user photo"/>
               </button>
             </div>
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user" data-popper-placement='bottom'>
               <div class="px-4 py-3" role="none">
                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                {user && user.profile_picture_url ? (
-                  user.username
-                ) : (
-                  "username"
-                )}
-                  
+                  {user.username}
                 </p>
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                {user && user.profile_picture_url ? (
-                    user.email
-                  ) : (
-                    "email"
-                  )}
+                  {user.email}
                 </p>
               </div>
               <ul class="py-1" role="none">
@@ -345,15 +307,7 @@ return (
               <div className="post-date">
                 <span>{post.created_at}</span>
               </div>
-              {user && user.id === post.user_id && (
-            <button
-              type="button"
-              onClick={() => deletePost(post.id)}
-              class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-2 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-            >
-              Delete post
-            </button>
-          )}
+              <button type="button" onClick={() => deletePost(post.id)} class="focus:outline-none  text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-2 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete post</button>
             </div>
           </div>
         </div>
@@ -367,4 +321,4 @@ return (
 );
 }
 
-export default Home
+export default Posts

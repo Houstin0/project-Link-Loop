@@ -8,8 +8,8 @@ fake = Faker()
 
 with app.app_context():
 
-    # Comment.query.delete()
-    # db.session.commit()
+    Comment.query.delete()
+    db.session.commit()
 
 
     # Post.query.delete()
