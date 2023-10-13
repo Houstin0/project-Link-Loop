@@ -8,6 +8,7 @@ function Home({user,onLogout}) {
   const [showCreatePost, setShowCreatePost] = useState(false)
   const [newPost, setNewPost] = useState(''); 
   const [newImage, setNewImage] = useState('');
+  const [newComment, setNewComment] = useState('');
 
 
   useEffect(()=>{
@@ -48,7 +49,7 @@ function Home({user,onLogout}) {
     
   function createPost() {
     if (user) {
-      // User is authenticated, allow post creation
+  
       fetch('/posts', {
         method: 'POST',
         headers: {
@@ -69,13 +70,11 @@ function Home({user,onLogout}) {
           setShowCreatePost(false);
         });
     } else {
-      // User is not authenticated, you can show an error message or redirect to the login page
-      console.log('You need to be logged in to create a post.');
+      alert('You need to be logged in to create a post.');
     }
   }
   
   function deletePost(postId) {
-    // Check if the logged-in user is the creator of the post
     const postToDelete = posts.find((post) => post.id === postId);
 
     if (user && postToDelete && user.id === postToDelete.user_id) {
@@ -86,25 +85,40 @@ function Home({user,onLogout}) {
           setPosts(posts.filter((post) => post.id !== postId));
         });
     } else {
-      // Handle unauthorized deletion, e.g., show an error message.
-      console.log("You are not authorized to delete this post.");
+    
+      alert("You are not authorized to delete this post.");
     }
   }
 
-  //  // Function to create a new comment
-  //  function createComment(postId, text) {
-  //   fetch('/api/comments', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ post_id: postId, text }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((newComment) => {
-  //       setComments([...comments, newComment]);
-  //     });
-  // }
+  
+   function createComment(postId, text) {
+    if (user){
+      fetch('/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ post_id: postId, text }),
+      })
+        .then((res) => res.json())
+        .then((newComment) => {
+          setComments([newComment, ...comments]);
+        });
+    }else{
+      alert('You need to be logged in to create a comment.');
+    }
+
+  }
+  const handleCommentChange = (e) => {
+    setNewComment(e.target.value);
+  };
+
+  const handleCommentSubmit = () => {
+    if (newComment.trim() !== '') {
+      onCreateComment(postId, newComment);
+      setNewComment('');
+    }
+  };
 
   function deleteComment(commentId) {
     fetch(`/comments/${commentId}`, {
@@ -332,7 +346,7 @@ return (
                   .map((comment) => (
                     <div key={comment.id} className="comment">
                       <span>{comment.user.username}</span>
-                      <span>{comment.text}</span>
+                      {comment.text}
                       <button type="button"  onClick={() => deleteComment(comment.id)} class="text-red-700 hover:text-white  border-red-700 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-1 py-0.5 text-center m-5 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Delete</button>
                     </div>
                   ))}
@@ -340,7 +354,21 @@ return (
               <button onClick={() => toggleComments(post.id)}>
                 {visibleComments[post.id] ? 'Hide comments..' : 'More comments...'}
               </button>
-              <p class="text-green-500">Add comment</p>
+
+
+<form>
+   <div class="w-full mb-4 border-0 border-black rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-black">
+       <div class="px-4 py-2 bg-white  dark:bg-gray-800">
+           <label for="comment" class="sr-only">Your comment</label>
+           <textarea id="comment" rows="4" class="w-full px-0 text-sm text-black-900 bg-white  dark:bg-gray-800 focus:ring-0 dark:text-black dark:placeholder-gray-400" placeholder="Write a comment..." required></textarea>
+       </div>
+       <div class="flex items-center justify-between px-3 py-2 bg-white border-t dark:border-gray-600">
+           <button type="button" onClick={()=> createComment(post.id)} class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+               Post comment
+           </button>
+          </div>
+          </div>
+</form>
               
               <div className="post-date">
                 <span>{post.created_at}</span>
