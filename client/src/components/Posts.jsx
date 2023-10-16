@@ -203,7 +203,7 @@ function Posts({user}){
                                 <p className="comment-username">{comment.user?.username}:</p>
                                 <p className="comment-text">{comment.text}</p>
                       
-                                {user && user.id === comment.user.id && (
+                                {user && user.id === comment.user?.id && (
                                   <button
                                     type="button"
                                     onClick={() => deleteComment(comment.id)}
