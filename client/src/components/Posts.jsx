@@ -8,7 +8,7 @@ function Posts({user}){
   const [visibleComments, setVisibleComments] = useState({})
   const [showCreatePost, setShowCreatePost] = useState(false)
   const [newPost, setNewPost] = useState(''); 
-  const [newImage, setNewImage] = useState('');
+  const [newImage, setNewImage] = useState('')
   const [newComment, setNewComment] = useState('');
 
 
@@ -23,10 +23,7 @@ function Posts({user}){
     }))
   } 
 
-  const toggleCreatePost = () => {
-    setShowCreatePost((prev) => !prev);
-    setNewPost('')
-  }
+
 
   function likePost(postId) {
     setPosts((prevPosts) =>
@@ -48,32 +45,7 @@ function Posts({user}){
   }
 
     
-  function createPost() {
-    if (user) {
   
-      fetch('/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          caption: newPost,
-          image_url: newImage,
-          likes: 0,
-          user_id: user.id,
-        }),
-      })
-        .then((res) => res.json())
-        .then((newPostData) => {
-          setPosts([newPostData, ...posts]);
-          setNewPost('');
-          setNewImage('');
-          setShowCreatePost(false);
-        });
-    } else {
-      alert('You need to be logged in to create a post.');
-    }
-  }
   
   function deletePost(postId) {
     const postToDelete = posts.find((post) => post.id === postId);
@@ -129,13 +101,52 @@ function Posts({user}){
         setComments(comments.filter((comment) => comment.id !== commentId));
       });
   }
+  const toggleCreatePost = () => {
+    setShowCreatePost((prev) => !prev);
+    setNewPost('')
+ }
+
+ function createPost() {
+    if (user) {
+ 
+    fetch('/posts', {
+       method: 'POST',
+       headers: {
+          'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({
+          caption: newPost,
+          image_url: newImage,
+          likes: 0,
+          user_id: user.id,
+       }),
+    })
+       .then((res) => res.json())
+       .then((newPostData) => {
+          setPosts([newPostData, ...posts]);
+          setNewPost('');
+          setNewImage('');
+          setShowCreatePost(false);
+       });
+    } else {
+    alert('You need to be logged in to create a post.');
+    }
+ }
 
  
 
   return(
-    <>
+    <div id='main-post-container'>
         <div class="p-4 sm:ml-64 mt-16">
               <div class="p-1  border-0 border-gray-200 border-solid rounded-lg dark:border-gray-700 ">
+            
+                  <button onClick={toggleCreatePost} class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12V1m0 0L4 5m4-4 4 4m3 5v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
+                    </svg>
+                    <span class="flex-1 ml-3 whitespace-nowrap text-black">{showCreatePost ? 'Cancel' : 'Create Post'}</span>
+                  </button>
+              
                   {showCreatePost && (
                     <section class="bg-violet mt-10 dark:bg-gray-900">
                             <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
@@ -257,7 +268,7 @@ function Posts({user}){
       ))}
 
 </div>
-</>
+</div>
 )
 }
 export default Posts

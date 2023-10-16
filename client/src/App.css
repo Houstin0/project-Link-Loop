@@ -1,5 +1,9 @@
 #post_container{
-  margin-top: 80px;
+  margin-top: 40px;
+  margin-left: 200px;
+}
+#main-post-container{
+  display: block;
 }
 
 #homeContainer{
@@ -10,11 +14,11 @@
   margin-left: 50%;
 }
 .custom-max-width {
-  max-width: 80%; 
+  max-width: 100%; 
 }
 .custom-height {
   width: max-content;
-  height: max-content; /* You can adjust this percentage as needed */
+  height: max-content; 
 }
 
 
