@@ -200,7 +200,7 @@ function Posts({user}){
                   .map((comment) => (
                         <div key={comment.id} className="comment">
                               
-                                <p className="comment-username">{comment.user.username}:</p>
+                                <p className="comment-username">{comment.user?.username}:</p>
                                 <p className="comment-text">{comment.text}</p>
                       
                                 {user && user.id === comment.user.id && (
