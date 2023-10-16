@@ -22,7 +22,7 @@ function App() {
 
   const handleLogin = (userData) => {
     setUser(userData);
-    navigate('/')
+    // navigate('/')
   };
   const handleLogout = () => {
     console.log('Logging out from app');
