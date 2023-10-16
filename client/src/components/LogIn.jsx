@@ -1,8 +1,9 @@
 import { useState } from "react"
-
+import { useNavigate } from 'react-router-dom';
 function Login({onLogin}){
     const[username,setUsername]=useState("")
     const [password, setPassword] = useState('')
+    const navigate = useNavigate()
     
     function handleLogin(e){
       e.preventDefault()
@@ -14,7 +15,11 @@ function Login({onLogin}){
           body: JSON.stringify({username,password}),
       })
       .then((response) => response.json())
-      .then((user)=>onLogin(user))
+      .then((user)=>{
+        onLogin(user)
+        navigate('/')
+    })
+    
       .catch((error) => {
           console.log('Login error:', error);
         })

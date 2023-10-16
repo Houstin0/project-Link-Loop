@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Login from './components/LogIn';
 import Messaging from './components/messaging/Messaging'
 import Signup from './components/SignUp'; 
-import Contact from './components/Conatact';
+import Contact from './components/Contact';
 import About from './components/About';
 import Footer from './components/Footer';
 
@@ -22,7 +22,7 @@ function App() {
 
   const handleLogin = (userData) => {
     setUser(userData);
-    navigate('/') 
+    navigate('/')
   };
   const handleLogout = () => {
     console.log('Logging out from app');
@@ -31,6 +31,7 @@ function App() {
     })
       .then(() => {
         setUser(null);
+        navigate('/')
         console.log('Logout success from NavBar'); 
       })
       .catch((error) => {

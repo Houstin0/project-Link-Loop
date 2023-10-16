@@ -3,7 +3,6 @@ import Search from "./Search";
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 
-
 function Messaging({currentUser}) {
   const [recipientId, setRecipientId] = useState(null);
   const [recipients,setRecipients]=useState([])

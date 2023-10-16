@@ -14,9 +14,10 @@ class User(db.Model,SerializerMixin):
     username= db.Column(db.String,nullable=False,unique=True)
     email= db.Column(db.String,unique=True)
     password= db.Column(db.String)
-    messages = db.relationship('Message', back_populates='user')
+    # messages = db.relationship('Message', back_populates='user')
     posts = db.relationship('Post', back_populates='user')
     comments = db.relationship('Comment', back_populates='user')
+    messages = db.relationship('Message', foreign_keys="Message.sender_id", back_populates='user')
 
     def __repr__(self):
         return f"(id={self.id}, username={self.username}, email= {self.email}, profile_picture_url={self.profile_picture_url})"
@@ -49,10 +50,10 @@ class Message(db.Model,SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     sender_id= db.Column(db.Integer,db.ForeignKey('users.id'))
-    recipient_id=db.Column(db.Integer)
-    # username=db.Column(db.String)
+    recipient_id=db.Column(db.Integer,db.ForeignKey('users.id'))
 
-    user = db.relationship('User', back_populates='messages')
+    user = db.relationship('User', foreign_keys="Message.sender_id", back_populates='messages')
+ 
 
     def __repr__(self):
         return f"id={self.id}, text={self.text} , created_at={self.created_at} , sender_id={self.sender_id}, recipient_id={self.recipient_id}"
@@ -97,6 +98,13 @@ class Comment(db.Model,SerializerMixin):
 
     def __repr__(self):
         return f"id={self.id}, text={self.text},created_at={self.created_at}, updated_at={self.updated_at},user_id={self.user_id},post_id={self.post_id}"
+    
+class Follower(db.Model,SerializerMixin):
+    __tablename__ = 'followers'
+    serialize_rules=()
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
 
 

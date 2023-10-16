@@ -2,7 +2,7 @@ from flask import Flask,render_template, make_response,jsonify,request,session
 from sqlalchemy import desc
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
-from models import db,User,Post,Message,Comment
+from models import db,User,Post,Message,Comment,Follower
 import bcrypt
 import os
 # from flask_cors import CORS
@@ -317,23 +317,52 @@ class MessageByID(Resource):
         
 api.add_resource(MessageByID,'/messages/<int:id>')
 
+# class MessagesBetweenUsers(Resource):
+#     def get (self):
+#         try:
+#             sender_id=request.args.get('sender_id')
+#             recipient_id=request.args.get('recipient_id')
+
+#             messages=Message.query.filter(
+#                 (Message.sender_id==sender_id) | (Message.recipient_id==sender_id),
+#                 (Message.sender_id == recipient_id) | (Message.recipient_id == recipient_id)
+#             ).order_by(Message.created_at).all()
+
+#             message_dicts = [message.to_dict() for message in messages]
+#             return make_response(jsonify(message_dicts), 200)
+#         except Exception as e:
+#             response_dict = {"error": f"An error occurred while fetching messages: {str(e)}"}
+#             return make_response(jsonify(response_dict), 500)
+# api.add_resource(MessagesBetweenUsers, '/messages_between_users')
 class MessagesBetweenUsers(Resource):
-    def get (self):
-        try:
-            sender_id=request.args.get('sender_id')
-            recipient_id=request.args.get('recipient_id')
+    def get(self):
+        
+        recipient_id = request.args.get('recipient_id')
+        sender_id=request.args.get('sender_id')
+        
+        # Fetch messages between the current user and the recipient
+        messages = Message.query.filter(
+            ((Message.sender_id == sender_id) & (Message.recipient_id == recipient_id)) |
+            ((Message.sender_id == recipient_id) & (Message.recipient_id == sender_id))
+        ).order_by(Message.created_at).all()
 
-            messages=Message.query.filter(
-                (Message.sender_id==sender_id) | (Message.recipient_id==sender_id),
-                (Message.sender_id == recipient_id) | (Message.recipient_id == recipient_id)
-            ).order_by(Message.created_at).all()
+        message_dicts = [message.to_dict() for message in messages]
+        return make_response(jsonify(message_dicts), 200)
 
-            message_dicts = [message.to_dict() for message in messages]
-            return make_response(jsonify(message_dicts), 200)
-        except Exception as e:
-            response_dict = {"error": f"An error occurred while fetching messages: {str(e)}"}
-            return make_response(jsonify(response_dict), 500)
-api.add_resource(MessagesBetweenUsers, '/messages_between_users')
+    # def post(self):
+    #     sender_id=request.args.get('sender_id')
+    #     data = request.get_json()
+    #     recipient_id = data.get('recipient_id')
+    #     text = data.get('text')
+        
+        
+    #     new_message = Message(sender_id=sender_id, recipient_id=recipient_id, text=text)
+    #     db.session.add(new_message)
+    #     db.session.commit()
+
+    #     response = make_response(jsonify(new_message.to_dict()), 201)
+    #     return response
+api.add_resource(MessagesBetweenUsers,'/messagesbetweenusers')
 
 class UsersWithMessages(Resource):
     def get(self):
@@ -457,8 +486,12 @@ class Comments(Resource):
     def get(self):
         try:
             comments=Comment.query.all()
-            comment_dicts=[comment.to_dict() for comment in comments]
-            return make_response(jsonify(comment_dicts),200)
+            if not comments:
+                response_data = {"message": "No comments available."}
+                return make_response(jsonify(response_data), 200)
+
+            comment_dicts = [comment.to_dict() for comment in comments]
+            return make_response(jsonify(comment_dicts), 200)
         
         except Exception as e:
             response_dict = {"error": f"An error occurred while fetching comments.{str(e)}"}
@@ -535,6 +568,48 @@ class CommentByID(Resource):
             return make_response(jsonify(response_dict), 500)      
         
 api.add_resource(CommentByID,'/comments/<int:id>')
+
+class UserListWithFollowerCounts(Resource):
+    def get(self):
+        # current_user_id= session.get('user_id')
+
+        # if current_user_id:
+        users = User.query.all()
+        user_list = []
+
+        for user in users:
+            follower_count = Follower.query.filter_by(user_id=user.id).count()
+            user_data = {
+                "id": user.id,
+                "username": user.username,
+                "follower_count": follower_count,
+            }
+            user_list.append(user_data)
+
+        return make_response(jsonify(user_list), 200)
+    
+    def post(self):
+        data = request.get_json()
+        current_user_id= session.get('user_id')
+        tofollow=data.get('follow_id')
+        if not current_user_id:
+            return make_response(jsonify({"error": "User not authenticated"}), 401)
+        if current_user_id == id:
+            return make_response(jsonify({"error": "You cannot follow yourself"}), 400)
+        
+        existing_follower = Follower.query.filter_by(user_id=current_user_id, follower_id=tofollow).first()
+        if existing_follower:
+            return make_response(jsonify({"error": "You are already following this user"}), 400)
+        
+        new_follower = Follower(user_id=current_user_id, follower_id=tofollow)
+        db.session.add(new_follower)
+        db.session.commit()
+
+        return make_response(jsonify({"message": "Successfully followed user"}), 200)
+           
+
+       
+api.add_resource(UserListWithFollowerCounts, '/users/followers')  
 
 
 if __name__ == '__main__':
