@@ -48,7 +48,7 @@ function UserList({user}) {
    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
       <ul class="space-y-2 font-medium bg-blue">
          <li>
-         <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-black">Home</h2>
+         <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-black">Follow</h2>
          
          </li>
          {/* <li onClick={toggleCreatePost}>
