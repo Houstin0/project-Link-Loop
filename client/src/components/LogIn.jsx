@@ -17,7 +17,7 @@ function Login({onLogin}){
       .then((response) => response.json())
       .then((user)=>{
         onLogin(user)
-        navigate('/')
+        // navigate('/')
     })
     
       .catch((error) => {
