@@ -1,12 +1,12 @@
-from database import SessionLocal
+from app.database import SessionLocal
 from fastapi import Depends, HTTPException,status
 from sqlalchemy.orm import Session
-from models import User
+from app.models import User
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-from schemas import TokenData
+from app.schemas import TokenData
 from typing import Annotated
 
 def get_db():

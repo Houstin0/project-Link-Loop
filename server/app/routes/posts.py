@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
 from sqlalchemy.orm import Session
-from dependencies import get_db,get_current_user
+from app.dependencies import get_db,get_current_user
 from typing import List
-from models import Post
-from schemas import Post as PostSchema, PostUpdate,PostCreate
+from app.models import Post
+from app.schemas import Post as PostSchema, PostUpdate,PostCreate
 from sqlalchemy import desc
 import shutil
 

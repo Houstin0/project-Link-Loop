@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException,status
-from models import User
-from schemas import User as UserSchema,Token
+from app.models import User
+from app.schemas import User as UserSchema,Token
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from database import SessionLocal
-from dependencies import authenticate_user,create_access_token,get_current_user
+from app.database import SessionLocal
+from app.dependencies import authenticate_user,create_access_token,get_current_user
 
 router = APIRouter()
 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from database import engine
-from models import Base
-from routes import users,login,posts,messages,comments,friends
+from  app.database import engine
+from app.models import Base
+from app.routes import users,login,posts,messages,comments,friends
 
 app=FastAPI()
 
