@@ -1,7 +1,7 @@
 # project-Link-Loop
 
 ## Description 
-Link loop is a web application designed to connect users to other users.It aims to provide a platform where users can connect,message,share moments, and explore a world of visual stories.
+Link loop is a social media web application designed to connect users to other users.It aims to provide a platform where users can connect,message,share moments, and explore a world of visual stories.
 
 The app has been deployed,to visit it follow the link https://link-loop.onrender.com.
 

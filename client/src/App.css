@@ -1,180 +1,23 @@
-#post_container{
-  margin-top: 40px;
-  margin-left: 200px;
-}
-#main-post-container{
-  display: block;
+/* Default styles for larger screens */
+
+.fixed-bottom-navbar {
+  display: none; /* Initially hide the bottom navigation */
 }
 
-#homeContainer{
-  display: flex;
+/* Media query for smaller screens */
+@media (max-width: 640px) {
+  #logo-sidebar {
+    display: none; /* Hide the sidebar on smaller screens */
+  }
+
+  .fixed-bottom-navbar {
+    display: block; /* Show the bottom navigation on smaller screens */
+  }
 }
-#coversations{
-  margin-top: 100px;
-  margin-left: 50%;
-}
-.custom-max-width {
-  max-width: 100%; 
-}
+
+
 .custom-height {
-  width: max-content;
-  height: max-content; 
-}
-
-
-.post-details {
-  flex: 1; 
-  padding: 5px;
-}
-.post-details button{
-  color: rgb(51, 51, 230);
-}
-
-.post-user-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.post-user-info img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.post-user-info span {
-  font-weight: 600;
-}
-
-.post-caption {
-  margin-bottom: 10px;
-  font-size: 16px; 
-}
-
-.post-likes {
-  font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 16px; 
-}
-
-.post-comments {
-  max-height: max-content;
-  overflow-y: auto;
-}
-.post-comments button{
-  color: blue;
-}
-
-.comment {
-  padding: 2px;
-  display: flex;
-}
-
-.comment span:first-child {
-  font-weight: 600;
-  margin-right: 5px;
-  color: rgb(86, 4, 121);
-}
-
-
-.comments-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
-  color: #333; 
-}
-
-
-
-.message-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  max-height: 400px; /* Set a maximum height for the messages container */
-  overflow-y: hiden;
-  padding: 10px;
-  border: 2px solid gray;
-  border-radius: 10px;
-  margin-left: 20%;
-  margin-top: 8%;
-}
-.messages {
-  flex: 1; /* Allow the messages to take up available space */
-  overflow-y: auto; /* Enable vertical scrolling */
-}
-.message-container ul {
-  list-style: none;
-  padding: 0;
- 
-}
-
-.message-container li.sent {
-  text-align: right;
-  background-color: lightblue;
-}
-
-.message-container li.received {
-  text-align: left;
-  background-color: lightslategray;
-}
-
-.message-container li {
-  padding: 5px;
-  margin: 5px;
-  background: #f0f0f0;
-  border-radius: 5px;
-}
-
-.message-container li .user {
-  font-weight: 600;
-  color: #333;
-}
-
-.message-container li .time {
-  font-size: 0.6rem;
-  color: blue;
-}
-
-.message-container form.new-message {
-  display: flex;
-}
-
-.message-container input[type="text"] {
-  flex: 1;
-  padding: 5px;
-  margin-right: 10px;
-  border: 3px solid black;
-  border-radius: 5px;
-}
-
-.message-container button[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.message-container form.new-message {
-  display: flex;
-  position: sticky;
-  bottom: 0;
-  background: #fff;
-}
-/* Scrollbar styling */
-.message-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.message-container::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 4px;
-}
-
-.message-container::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  max-height: 90vh;
 }
 
 /* Style for the About Page */

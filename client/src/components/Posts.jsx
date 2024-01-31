@@ -1,274 +1,241 @@
-import { useState,useEffect } from 'react'
-import '../App.css'
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import "../App.css";
 
-function Posts({user}){
+function Posts({ user }) {
+  const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [visibleComments, setVisibleComments] = useState(false);
 
-  const [posts, setPosts] = useState([])
-  const [comments,setComments]=useState([])
-  const [visibleComments, setVisibleComments] = useState({})
-  const [showCreatePost, setShowCreatePost] = useState(false)
-  const [newPost, setNewPost] = useState(''); 
-  const [newImage, setNewImage] = useState('')
-  const [newComment, setNewComment] = useState('');
+  const [dropdownStates, setDropdownStates] = useState([]);
 
+  // Function to toggle the dropdown for a specific message
+  const toggleDropdown = (postId) => {
+    setDropdownStates((prevStates) => {
+      const index = prevStates.findIndex((state) => state.postId === postId);
 
-  useEffect(()=>{
-    fetch('/posts').then(res => res.json()).then(data=>setPosts(data))
-    fetch('/comments').then(res => res.json()).then(data=>setComments(data))
-  },[])
+      if (index !== -1) {
+        // Toggle the isOpen state for the specific message
+        const newStates = [...prevStates];
+        newStates[index] = { postId, isOpen: !newStates[index].isOpen };
+        return newStates;
+      } else {
+        // If the state for the message doesn't exist, create a new one with isOpen set to true
+        return [...prevStates, { postId, isOpen: true }];
+      }
+    });
+  };
+
+  // console.log(file)
+  function fetchPosts() {
+    fetch("/api/posts", {
+      headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
+    })
+      .then((res) => res.json())
+      .then((data) => setPosts(data));
+  }
+
+  function fetchComments() {
+    fetch("/api/comments", {
+      headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setComments(data);
+      });
+  }
+
+  useEffect(() => {
+    fetchPosts();
+    fetchComments();
+  }, []);
+
   const toggleComments = (postId) => {
     setVisibleComments((prev) => ({
       ...prev,
       [postId]: !prev[postId],
-    }))
-  } 
+    }));
+  };
 
+  const [confirmDeletePost, setConfirmDeletePost] = useState(null);
 
+  const handleDeletePost = (postId) => {
+    // Set postId to confirm deletion
+    setConfirmDeletePost(postId);
+  };
 
-  function likePost(postId) {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId ? { ...post, likes: post.likes + 1 } : post
-      )
-    )
-    fetch(`/posts/{postId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ posts }),
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      
-    });
-  }
+  const handleConfirmDelete = () => {
+    // Close the confirmation dialog
+    setConfirmDeletePost(null);
 
-    
-  
-  
-  function deletePost(postId) {
-    const postToDelete = posts.find((post) => post.id === postId);
-
-    if (user && postToDelete && user.id === postToDelete.user_id) {
-      fetch(`/posts/${postId}`, {
-        method: 'DELETE',
-      })
-        .then(() => {
-          setPosts(posts.filter((post) => post.id !== postId));
-        });
-    } else {
-    
-      alert("You are not authorized to delete this post.");
-    }
-  }
-
-  
-   function createComment(postId, text) {
-    if (user){
-      fetch('/comments', {
-        method: 'POST',
+    if (confirmDeletePost !== null) {
+      // User confirmed deletion
+      fetch(`/api/posts/${confirmDeletePost}`, {
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
-        body: JSON.stringify({ post_id: postId, text }),
       })
-        .then((res) => res.json())
-        .then((newComment) => {
-          setComments([newComment, ...comments]);
+        .then((res) => {
+          if (res.ok) {
+            // Post successfully deleted
+            fetchPosts();
+          } else {
+            // Handle error, e.g., show an error message
+            console.error("Failed to delete post");
+          }
+        })
+        .catch((error) => {
+          console.error("Error while deleting post:", error);
         });
-    }else{
-      alert('You need to be logged in to create a comment.');
-    }
-
-  }
-  const handleCommentChange = (e) => {
-    setNewComment(e.target.value);
-  };
-
-  const handleCommentSubmit = () => {
-    if (newComment.trim() !== '') {
-      onCreateComment(postId, newComment);
-      setNewComment('');
     }
   };
 
-  function deleteComment(commentId) {
-    fetch(`/comments/${commentId}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        setComments(comments.filter((comment) => comment.id !== commentId));
-      });
-  }
-  const toggleCreatePost = () => {
-    setShowCreatePost((prev) => !prev);
-    setNewPost('')
- }
+  const handleCancelDelete = () => {
+    // User canceled deletion
+    setConfirmDeletePost(null);
+  };
 
- function createPost() {
-    if (user) {
- 
-    fetch('/posts', {
-       method: 'POST',
-       headers: {
-          'Content-Type': 'application/json',
-       },
-       body: JSON.stringify({
-          caption: newPost,
-          image_url: newImage,
-          likes: 0,
-          user_id: user.id,
-       }),
-    })
-       .then((res) => res.json())
-       .then((newPostData) => {
-          setPosts([newPostData, ...posts]);
-          setNewPost('');
-          setNewImage('');
-          setShowCreatePost(false);
-       });
-    } else {
-    alert('You need to be logged in to create a post.');
-    }
- }
-
- 
-
-  return(
-    <div id='main-post-container'>
-        <div class="p-4 sm:ml-64 mt-16">
-              <div class="p-1  border-0 border-gray-200 border-solid rounded-lg dark:border-gray-700 ">
-            
-                  <button onClick={toggleCreatePost} class="flex items-center p-2 bg-violet dark:bg-violet-800 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12V1m0 0L4 5m4-4 4 4m3 5v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
-                    </svg>
-                    <span class="flex-1 ml-3 whitespace-nowrap text-black">{showCreatePost ? 'Cancel' : 'Create Post'}</span>
-                  </button>
-              
-                  {showCreatePost && (
-                    <section class="bg-violet mt-10 dark:bg-gray-900">
-                            <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-                                  <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add a new Post</h2>
-                                  <form action="/">
-                                    <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                                        
-                                      <div class="mb-6">
-                                      <label for="image_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image Url</label>
-                                       <input onChange={(e) => setNewImage(e.target.value)} value={newImage} type="text" id="image_url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                                      </div>
-                                       <div>
-                                            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
-                                            <textarea onChange={(e) => setNewPost(e.target.value)} value={newPost} id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                        </div>
-                                    </div>
-                                        <button onClick={createPost} type="button" class="inline-flex items-left px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-violet-800 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-blue-800">
-                                            Add Post
-                                        </button>
-                                  </form>
-                            </div>
-                    </section>
-                  )}
-          </div>
-          </div>
-       
- <div id="post_container">
+  return (
+    <>
       {posts.map((post) => (
-        <div key={post.id}
-          className="custom-max-width mb-5 p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <div className="flex">
-                <div className="custom-height">
-                    <img
-                      className="rounded-t-lg object-cover  w-full h-full"
-                      src={post.image_url}
-                      alt={post.caption}
-                    />
-                </div>
-            <div className="w-1/2">
-              <div className="post-details">
-                        <div className="post-user-info">
-                          <img
-                            src={post.user.profile_picture_url}
-                            alt={post.user.username}
-                          />
-                          <span>{post.user.username}</span>
-                        </div>
-                <div className="post-caption">{post.caption}</div>
-                          <div className="post-likes">
-
-                            <button onClick={() => likePost(post.id)}>
-                            <svg class="w-5 h-5 text-red-800 dark:text-red" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                              <path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/>
-                          </svg>
-                              {post.likes}</button>
-                          </div>
-                <div className="post-comments">
-                  <div className="comments-title">comments:</div>
-                  {comments
-                  .filter((comment) => comment.post_id === post.id)
-                  .slice(0, visibleComments[post.id] ? comments.length : 3)
-                  .map((comment) => (
-                        <div key={comment.id} className="comment">
-                              
-                                <p className="comment-username">{comment.user?.username}:</p>
-                                <p className="comment-text">{comment.text}</p>
-                      
-                                {user && user.id === comment.user?.id && (
-                                  <button
-                                    type="button"
-                                    onClick={() => deleteComment(comment.id)}
-                                    className="delete-comment-button"
-                                  >
-                                    Delete
-                                  </button>)}
-                          </div>))}
-                          {comments
-                            .filter((comment) => comment.post_id === post.id)
-                            .length === 0 && (
-                            <p>No comments yet.</p>
-                          )}
-                          <button onClick={() => toggleComments(post.id)}>
-                  {visibleComments[post.id] ? 'Hide comments..' : 'More comments...'}
-                </button>       
-                </div>
-
-
-
-     {user && (<form onSubmit={()=> createComment(post.id)}>
-      <div class="w-full mb-4 border-0 border-black rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-black">
-          <div class="px-4 py-2 bg-white  dark:bg-gray-800">
-              <label for="comment" class="sr-only">Your comment</label>
-              <textarea id="comment" rows="4" class="w-full px-0 text-sm text-black-900 bg-white  dark:bg-gray-800 focus:ring-0 dark:text-black dark:placeholder-gray-400" placeholder="Write a comment..." required></textarea>
+        <div
+          key={post.id}
+          role="status"
+          className="relative shadow mb-4 space-y-8 md:space-y-0 md:space-x-4 rtl:space-x-reverse md:flex md:items-center dark:bg-gray-900"
+        >
+          
+          <button
+            onClick={() => toggleDropdown(post.id)}
+            id={`dropdownMenuIconButton_${post.id}`}
+            data-dropdown-toggle={`dropdownDots_${post.id}`}
+            data-dropdown-placement="bottom-start"
+            className="absolute top-2 right-2 p-2 text-sm font-medium text-center text-gray-900 bg-gray-100 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-gray=100 focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-900"
+            type="button"
+          >
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 4 15"
+            >
+              <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+            </svg>
+          </button>
+          <div
+            id={`dropdownDots_${post.id}`}
+            className={`absolute top-8 right-2 z-10 ${
+              dropdownStates.find((state) => state.postId === post.id)?.isOpen
+                ? "block"
+                : "hidden"
+            } bg-gray-100 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-900`}
+          >
+            <ul
+              className="py-2 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownMenuIconButton"
+            >
+              {user && post.owner.id === user.id && (
+                <li>
+                  <a
+                    href="#"
+                    onClick={() => handleDeletePost(post.id)}
+                    className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:text-red-500 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
+                  >
+                    Delete
+                  </a>
+                </li>
+              )}
+            </ul>
           </div>
-          <div class="flex items-center justify-between px-3 py-2 bg-white border-t dark:border-gray-600">
-              <button type="button" onClick={()=> createComment(post.id)} class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-violet-800 rounded-lg focus:ring-4 focus:ring-violet-200 dark:focus:ring-violet-900 hover:bg-violet-800">
-                  Post comment
-              </button>
-            </div>
-            </div>
-      </form>)}
-                
-                <div className="post-date">
-                  <span>{post.created_at}</span>
-                </div>
-                {user && user.id === post.user_id && (
-              <button
-                type="button"
-                onClick={() => deletePost(post.id)}
-                class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-2 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-              >
-                Delete post
-              </button>
-            )}
+
+          <div className="custom-height sm:w-full md:w-full lg:w-full xl:w-full flex items-center justify-center bg-gray-1000 rounded  dark:bg-gray-900">
+            <img
+              className="rounded-t-lg object-cover custom-height   "
+              src={post.image_url}
+              alt={post.caption}
+            />
+          </div>
+          <div className="mt-4 mb-6 w-full pl-2">
+            <div className="flex items-center ">
+              <div className="relative">
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={post.owner.profile_picture}
+                  alt={post.owner.username}
+                />
+                <span className="bottom-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+              </div>
+              <div className="flex flex-col mb-2">
+                <span className="text-sm text-purple-700 font-extrabold ml-2 ">
+                  {post.owner.username}
+                </span>
+                <span className=" ml-4 text-xs text-gray-900 dark:text-gray-100">
+                  Location or sm
+                </span>
               </div>
             </div>
+            <p className="mb-3 text-gray-900 dark:text-gray-100">
+              {post.caption}
+            </p>
+
+            {comments
+              .filter((comment) => comment.post_id === post.id)
+              .slice(0, visibleComments[post.id] ? comments.length : 2)
+              .map((comment) => (
+                <div key={comment.id} role="status" className="max-w-sm ">
+                  <p className=" text-base text-gray-900 dark:text-gray-100">
+                    <a
+                      href="#"
+                      className="font-bold text-purple-700 hover:text-gray-900  dark:text-purple-700 dark:hover:text-gray-100 hover:underline"
+                    >
+                      {comment.commenter?.username}
+                    </a>
+                    {"    "}
+                    {comment.content}
+                  </p>
+                </div>
+              ))}
+
+            {comments.filter((comment) => comment.post_id === post.id)
+              .length === 0 && <p className="text-gray-900 dark:text-gray-100 ">No comments yet.</p>}
+            <p
+              className="text-blue-700 cursor-pointer "
+              onClick={() => toggleComments(post.id)}
+            >
+              {visibleComments[post.id]
+                ? "Less comments.."
+                : "More comments..."}
+            </p>
+
+            <span className="sr-only">Loading...</span>
           </div>
+          
         </div>
       ))}
 
-</div>
-</div>
-)
+      {confirmDeletePost !== null && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-md shadow-md">
+            <p>Are you sure you want to delete this post?</p>
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-md"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleCancelDelete}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
-export default Posts
+export default Posts;

@@ -1,70 +1,78 @@
-import React,{useState,useEffect} from 'react';
-import { Routes, Route,useNavigate } from 'react-router-dom';
-// 
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Login from './components/LogIn';
-import Messaging from './components/messaging/Messaging'
-import Signup from './components/SignUp'; 
-import Contact from './components/Contact';
-import About from './components/About';
-import Footer from './components/Footer';
+import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+//
+import Signup from "./components/SignUp";
+import Login from "./components/LogIn";
+import Home from "./components/Home";
 
+import Contact from "./components/Contact";
+import About from "./components/About";
+import Footer from "./components/Footer";
+import Cookies from "js-cookie";
+
+import Inbox from "./components/Inbox";
+import DarkModeSwitcher from "./components/DarkModeSwitcher";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate()
+  const [isLoggedIn, setLoggedIn] = useState(!!Cookies.get("access_token"));
+  const [userData, setUserData] = useState({});
+  const navigate = useNavigate();
 
-  const handleSignUp = (userData) => {
-    setUser(userData)
-    navigate('/')
+  const handleSignUp = () => {
+    setLoggedIn(true);
   };
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-    // navigate('/')
-  };
-  const handleLogout = () => {
-    console.log('Logging out from app');
-    fetch('/logout', {
-      method: 'DELETE',
-    })
-      .then(() => {
-        setUser(null);
-        navigate('/')
-        console.log('Logout success from NavBar'); 
-      })
-      .catch((error) => {
-        console.error('Logout error:', error);
-      });
+  const handleLogin = () => {
+    setLoggedIn(true);
+    navigate("/home");
   };
   useEffect(() => {
-    fetch("/check_session")
-    .then((response) => {
-      if (response.ok) {
-        response.json().then((user) => setUser(user));
-      }
-    });
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      // Parse the JSON string to an object
+      const parsedUserData = JSON.parse(storedUserData);
+      setUserData(parsedUserData);
+    }
   }, []);
+  const handleLogout = () => {
+    // Remove the access token cookie
+    Cookies.remove("access_token");
+    // Remove userData from localStorage
+    localStorage.removeItem("userData");
+    setLoggedIn(false);
+  };
 
+  return (
+    <>
+      {/* <NavBar user={userData} onLogout={handleLogout} onSignup={handleSignUp} /> */}
+      <Routes>
+        <Route path="/" element={<Login onLogin={handleLogin} />} />
+        <Route
+          path="/signup"
+          element={<Signup onSignUp={handleSignUp} onLogin={handleLogin} />}
+        />
 
-  
-  
-    return (
-      <>
-        <NavBar user={user} onLogout={handleLogout} onSignup={handleSignUp}/>
-        <Routes>
-          <Route path="/" element={user ? <Home user={user} onLogout={handleLogout} /> : <Home/>} />
-          <Route path="/messaging" element={user ? <Messaging currentUser={user}/> : <Login onLogin={handleLogin} /> } />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/signup" element={<Signup onSignUp={handleSignUp} />} />
-          <Route path='/contact' element={<Contact/>}/>
-          <Route path='/about' element={<About/>}/>
-        </Routes>
-        <Footer/>
+        <Route
+          path="/home"
+          element={
+            isLoggedIn ? (
+              <Home user={userData} onLogout={handleLogout} />
+            ) : (
+              <Login onLogin={handleLogin} />
+            )
+          }
+        />
 
-      </>
-    );
+        <Route path="/inbox" element={<Inbox user={userData} />} />
+
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+      {/* <DarkModeSwitcher/> */}
+      {/* <Footer /> */}
+    </>
+  );
 }
 
-export default App
+export default App;
