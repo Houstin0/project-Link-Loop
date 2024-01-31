@@ -17,3 +17,7 @@ app.include_router(posts.router)
 app.include_router(friends.router)
 app.include_router(messages.router)
 app.include_router(comments.router)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=5000, reload=True)

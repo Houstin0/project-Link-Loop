@@ -33,7 +33,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
 
 
 # Get all users
-@router.get("/users", response_model=List[UserSchema], tags=["users"],dependencies=[Depends(get_current_user)])
+@router.get("/users", response_model=List[UserSchema], tags=["users"])
 def read_all_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     return users
