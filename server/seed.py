@@ -1,10 +1,10 @@
-from main import app
-from database import SessionLocal
+from app.main import app
+from app.database import SessionLocal
 from sqlalchemy.orm import Session
-from models import User,Post,Message,Comment,Friendship,Like,Notification
+from app.models import User,Post,Message,Comment,Friendship,Like,Notification
 import random
 from faker import Faker
-from dependencies import get_password_hash
+from app.dependencies import get_password_hash
 
 fake = Faker()
 
