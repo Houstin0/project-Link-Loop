@@ -13,11 +13,11 @@ function NavBar({ user, onLogout }) {
   return (
     <nav className="fixed top-0 z-50 w-full bg-purple-700  dark:bg-purple-700">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-1">
-        <a href="/home" className="flex items-center">
+        <NavLink to="/home" className="flex items-center">
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-100 dark:text-gray-900">
             Link Loop
           </span>
-        </a>
+        </NavLink>
 
         <div
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 pt-0"
@@ -27,44 +27,39 @@ function NavBar({ user, onLogout }) {
             {user ? (
               <>
                 <li>
-                  <a
-                    href="/home"
+                  <NavLink to="/home"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Home
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/messaging"
+                  <NavLink to="/messaging"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Inbox
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/about"
+                  <NavLink to="/about"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     About
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/contact"
+                  <NavLink to="/contact"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Contact
-                  </a>
+                  </NavLink>
                 </li>
                 <li onClick={handleLogout}>
-                  <a
-                    href=""
+                  <NavLink to=""
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Log Out
-                  </a>
+                  </NavLink>
                 </li>
 
                 <button
@@ -95,52 +90,46 @@ function NavBar({ user, onLogout }) {
                <DarkModeSwitcher />
                </li>
                 <li>
-                  <a
-                    href="/signup"
+                  <NavLink to="/signup"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Sign Up
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/"
+                  <NavLink to="/"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Log In
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/home"
+                  <NavLink to="/home"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Home
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/messaging"
+                  <NavLink to="/messaging"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Messaging
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/about"
+                  <NavLink to="/about"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     About Us
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="/contact"
+                  <NavLink to="/contact"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Contact Us
-                  </a>
+                  </NavLink>
                 </li>
               </>
             )}

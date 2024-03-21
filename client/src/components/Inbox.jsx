@@ -194,8 +194,8 @@ function Inbox() {
 
       {selectedFriend ? (
         <div className="flex flex-col h-screen bg-gray-200 dark:bg-gray-900 sm:ml-64 divide-y divide-gray-500 dark:divide-gray-700">
-          <nav class="bg-gray-100 border-gray-200 dark:bg-gray-900">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
+          <nav className="bg-gray-100 border-gray-200 dark:bg-gray-900">
+            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
               {selectedFriend && (
                 <a
                   href=""
@@ -216,7 +216,7 @@ function Inbox() {
               )}
 
               <svg
-                class="w-6 h-6 text-gray-800 dark:text-white"
+                className="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -304,7 +304,7 @@ function Inbox() {
                           type="button"
                         >
                           <svg
-                            class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                            className="w-4 h-4 text-gray-500 dark:text-gray-400"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
@@ -324,13 +324,13 @@ function Inbox() {
                           } bg-gray-100 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-900`}
                         >
                           <ul
-                            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                            className="py-2 text-sm text-gray-700 dark:text-gray-200"
                             aria-labelledby="dropdownMenuIconButton"
                           >
                             <li>
                               <a
                                 href="#"
-                                class="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
+                                className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
                               >
                                 Reply
                               </a>
@@ -338,7 +338,7 @@ function Inbox() {
                             <li>
                               <a
                                 href="#"
-                                class="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
+                                className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
                               >
                                 Forward
                               </a>
@@ -346,7 +346,7 @@ function Inbox() {
                             <li>
                               <a
                                 href="#"
-                                class="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
+                                className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
                               >
                                 Copy
                               </a>
@@ -355,7 +355,7 @@ function Inbox() {
                             <li>
                               <a
                                 href="#"
-                                class="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:text-red-500 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
+                                className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:text-red-500 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
                               >
                                 Delete
                               </a>

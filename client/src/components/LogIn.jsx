@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import NavBar from "./NavBar";
+import { NavLink } from "react-router-dom";
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -125,12 +126,11 @@ function Login({ onLogin }) {
                 </button>
                 <p className="text-sm font-light text-gray-600 dark:text-gray-300">
                   Don’t have an account yet?{" "}
-                  <a
-                    href="/signup"
+                  <NavLink to="/signup"
                     className="font-medium text-blue-600 hover:underline dark:text-primary-500"
                   >
                     Sign up
-                  </a>
+                  </NavLink>
                 </p>
               </form>
             </div>
