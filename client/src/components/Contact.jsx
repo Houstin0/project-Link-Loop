@@ -24,7 +24,7 @@ function Contact({userData}) {
           </div>
           <div className="mb-6">
             <label
-              for="subject"
+              htmlFor="subject"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Subject
@@ -39,7 +39,7 @@ function Contact({userData}) {
           </div>
           <div className="mb-6">
             <label
-              for="message"
+              htmlFor="message"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Your message

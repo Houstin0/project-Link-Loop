@@ -10,7 +10,7 @@ function CreatePostForm({ user }) {
     e.preventDefault();
 
     if (user) {
-      fetch("/api/posts", {
+      fetch("https://link-db.onrender.com/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
