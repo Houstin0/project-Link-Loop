@@ -8,7 +8,7 @@ function Login({ onLogin }) {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("/api/token", {
+      const response = await fetch("https://link-db.onrender.com/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
