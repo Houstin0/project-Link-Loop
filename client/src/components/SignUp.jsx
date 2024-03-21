@@ -1,5 +1,5 @@
 import  { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , NavLink } from "react-router-dom";
 import Cookies from "js-cookie";
 import NavBar from "./NavBar";
 
@@ -147,12 +147,11 @@ function SignUp({ onSignUp ,onLogin,userData}) {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
-                <a
-                  href="/login"
+                <NavLink to ="/login"
                   className="font-medium text-blue-600 hover:underline dark:text-primary-500"
                 >
                   Login here
-                </a>
+                </NavLink>
               </p>
             </form>
           </div>
