@@ -28,7 +28,7 @@ function Posts({ user }) {
 
   // console.log(file)
   function fetchPosts() {
-    fetch("/api/posts", {
+    fetch("https://link-db.onrender.com/posts", {
       headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
     })
       .then((res) => res.json())
@@ -36,7 +36,7 @@ function Posts({ user }) {
   }
 
   function fetchComments() {
-    fetch("/api/comments", {
+    fetch("api/comments", {
       headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
     })
       .then((res) => res.json())
