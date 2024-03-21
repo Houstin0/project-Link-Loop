@@ -34,7 +34,7 @@ function NavBar({ user, onLogout }) {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/messaging"
+                  <NavLink to="/inbox"
                     className="block py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-gray-900 md:dark:hover:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-hover:bg-gray-100 md:dark:hover:bg-transparent dark:border-gray-700"
                   >
                     Inbox

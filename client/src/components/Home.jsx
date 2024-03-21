@@ -2,7 +2,7 @@ import Posts from "./Posts";
 import Profile from "./Profile";
 import CreatePostForm from "./CreatePostForm";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -94,7 +94,7 @@ function Home({ onLogout }) {
             aria-label="Sidebar"
           >
             <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-              <a href="/home" className="flex items-center ps-2.5 mb-5">
+              <NavLink to="/home" className="flex items-center ps-2.5 mb-5">
                 <img
                   src="https://flowbite.com/docs/images/logo.svg"
                   className="h-6 me-3 sm:h-7"
@@ -104,7 +104,7 @@ function Home({ onLogout }) {
                 <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
                   Link Loop
                 </span>
-              </a>
+              </NavLink>
 
               <ul className="space-y-2 font-medium">
                 <DarkModeSwitcher />
@@ -130,8 +130,7 @@ function Home({ onLogout }) {
                   </button>
                 </li>
                 <li>
-                  <a
-                    href="/inbox"
+                  <NavLink to ="/inbox"
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group hover:no-underline"
                   >
                     <svg
@@ -147,7 +146,7 @@ function Home({ onLogout }) {
                     <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
                       3
                     </span>
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
                   {/* <a
@@ -168,8 +167,7 @@ function Home({ onLogout }) {
                 </li>
 
                 <li>
-                  <a
-                    href=""
+                  <NavLink to =""
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group hover:no-underline"
                     onClick={onLogout}
                   >
@@ -192,7 +190,7 @@ function Home({ onLogout }) {
                     <span className="flex-1 ms-3 whitespace-nowrap">
                       Log out
                     </span>
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>
