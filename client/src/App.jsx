@@ -45,7 +45,6 @@ function App() {
 
   return (
     <>
-      {/* <NavBar user={userData} onLogout={handleLogout} onSignup={handleSignUp} /> */}
       <Routes>
         <Route path="/" element={<Login onLogin={handleLogin} />} />
         <Route
