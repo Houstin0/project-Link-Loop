@@ -429,7 +429,7 @@ function Home({ onLogout }) {
         </div>
       )}
 
-      <div className="p-2 sm:ml-8 md:ml-16 lg:ml-32 xl:ml-48 md:mr-48  bg-gray-100 dark:bg-gray-900">
+      <div className="p-3 sm:ml-8 md:ml-16 lg:ml-32 xl:ml-48 md:mr-48  bg-gray-100 dark:bg-gray-900">
         {showCreatePost && <CreatePostForm user={user} />}
         {showProfile ? <Profile user={user} /> : <Posts user={user} />}
       </div>
