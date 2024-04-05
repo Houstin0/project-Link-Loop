@@ -83,7 +83,7 @@ class CommentUpdate(BaseModel):
 
 class Comment(CommentBase):
     id: Optional[int] = None
-    # commenter: UserBase
+    commenter: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -162,7 +162,7 @@ class Post(PostBase):
     id: Optional[int] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    # owner: UserBase
+    owner: UserBase
     # likes: List[Like] = []
     # comments: List[Comment] = []
 
