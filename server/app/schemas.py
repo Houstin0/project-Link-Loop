@@ -39,8 +39,8 @@ class FriendshipUpdate(BaseModel):
 
 class Friendship(FriendshipBase):
     id: Optional[int] = None
-    follower: UserBase
-    following: UserBase
+    # follower: UserBase
+    # following: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -60,7 +60,7 @@ class LikeUpdate(BaseModel):
 
 class Like(LikeBase):
     id: Optional[int] = None
-    liker: UserBase
+    # liker: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -83,7 +83,7 @@ class CommentUpdate(BaseModel):
 
 class Comment(CommentBase):
     id: Optional[int] = None
-    commenter: UserBase
+    # commenter: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -105,7 +105,7 @@ class NotificationUpdate(BaseModel):
 
 class Notification(NotificationBase):
     id: Optional[int] = None
-    receiver: UserBase
+    # receiver: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -129,8 +129,8 @@ class MessageUpdate(BaseModel):
 
 class Message(MessageBase):
     id: Optional[int] = None
-    sender: UserBase
-    receiver: UserBase
+    # sender: UserBase
+    # receiver: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -138,7 +138,7 @@ class Message(MessageBase):
         from_attributes = True
 
 class UserWithMessage(BaseModel):
-    friend: UserBase
+    # friend: UserBase
     messages: Optional[List[Message]]
 
     class Config:
@@ -162,9 +162,9 @@ class Post(PostBase):
     id: Optional[int] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    owner: UserBase
-    likes: List[Like] = []
-    comments: List[Comment] = []
+    # owner: UserBase
+    # likes: List[Like] = []
+    # comments: List[Comment] = []
 
     class Config:
         from_attributes = True        
@@ -185,13 +185,13 @@ class User(UserBase):
     id: Optional[int] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    posts: List[Post] = []
-    likes: List[Like] = []
-    comments: List[Comment] = []
-    notifications: List[Notification] = []
-    friendships: List[Friendship] = []
-    sent_messages: List[Message] = []
-    received_messages: List[Message] = []
+    # posts: List[Post] = []
+    # likes: List[Like] = []
+    # comments: List[Comment] = []
+    # notifications: List[Notification] = []
+    # friendships: List[Friendship] = []
+    # sent_messages: List[Message] = []
+    # received_messages: List[Message] = []
 
     class Config:
         from_attributes = True

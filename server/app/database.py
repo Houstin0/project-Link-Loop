@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "postgresql://loop_db_i8tz_user:hUrzljYqduDctu3Uxvkk6MWl1nkDdpTP@dpg-co80ehsf7o1s738o7l90-a.oregon-postgres.render.com/loop_db_i8tz"
+SQLALCHEMY_DATABASE_URL = "postgresql://link_loop_db_pemf_user:BE0ad2dr46gxVFnMzMeCsVY5coTsnzMq@dpg-co82spa0si5c73b63omg-a.oregon-postgres.render.com/link_loop_db_pemf"
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
 
 engine = create_engine(
