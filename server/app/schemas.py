@@ -39,8 +39,8 @@ class FriendshipUpdate(BaseModel):
 
 class Friendship(FriendshipBase):
     id: Optional[int] = None
-    # follower: UserBase
-    # following: UserBase
+    follower: UserBase
+    following: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -129,8 +129,8 @@ class MessageUpdate(BaseModel):
 
 class Message(MessageBase):
     id: Optional[int] = None
-    # sender: UserBase
-    # receiver: UserBase
+    sender: UserBase
+    receiver: UserBase
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -138,7 +138,7 @@ class Message(MessageBase):
         from_attributes = True
 
 class UserWithMessage(BaseModel):
-    # friend: UserBase
+    friend: UserBase
     messages: Optional[List[Message]]
 
     class Config:
