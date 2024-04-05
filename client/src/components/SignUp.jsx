@@ -13,7 +13,7 @@ function SignUp({ onSignUp ,onLogin,userData}) {
  
   const handleSignUp = async () => {
     try {
-      const response = await fetch("https://link-db.onrender.com/register", {
+      const response = await fetch("https://link-loop-db.onrender.com/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +26,7 @@ function SignUp({ onSignUp ,onLogin,userData}) {
         onSignUp();
 
         // Use the same login functionality from Login.jsx
-        const loginResponse = await fetch("https://link-db.onrender.com/token", {
+        const loginResponse = await fetch("https://link-loop-db.onrender.com/token", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",

@@ -10,7 +10,7 @@ function Profile({ user, onLogout }) {
   };
 
   useEffect(() => {
-    fetch("https://link-db.onrender.com/posts", {
+    fetch("https://link-loop-db.onrender.com/posts", {
       headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
     })
       .then((res) => res.json())

@@ -40,7 +40,7 @@ function Inbox() {
   // Function to fetch conversations
   const fetchConversations = async (userId) => {
     try {
-      const response = await fetch(`https://link-db.onrender.com/friends/${userId}`, {
+      const response = await fetch(`https://link-loop-db.onrender.com/friends/${userId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
@@ -107,7 +107,7 @@ function Inbox() {
     }
 
     try {
-      const response = await fetch(`https://link-db.onrender.com/messages`, {
+      const response = await fetch(`https://link-loop-db.onrender.com/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -44,7 +44,7 @@ function Home({ onLogout }) {
   };
 
   function fetchAllUsers() {
-    fetch("https://link-db.onrender.com/users", {
+    fetch("https://link-loop-db.onrender.com/users", {
       headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
     })
       .then((res) => res.json())
@@ -57,7 +57,7 @@ function Home({ onLogout }) {
 
   const handleFriendshipCreate = async (clickedUserId) => {
     try {
-      const response = await fetch("https://link-db.onrender.com/friends", {
+      const response = await fetch("https://link-loop-db.onrender.com/friends", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

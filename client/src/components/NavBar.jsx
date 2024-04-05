@@ -5,7 +5,7 @@ import DarkModeSwitcher from "./DarkModeSwitcher";
 
 function NavBar({ user, onLogout }) {
   function handleLogout() {
-    fetch("https://link-db.onrender.com/logout", {
+    fetch("https://link-loop-db.onrender.com/logout", {
       method: "DELETE",
     }).then(() => onLogout());
   }

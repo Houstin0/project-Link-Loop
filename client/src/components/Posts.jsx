@@ -28,7 +28,7 @@ function Posts({ user }) {
 
 
   function fetchPosts() {
-    fetch("https://link-db.onrender.com/posts", {
+    fetch("https://link-loop-db.onrender.com/posts", {
       headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
     })
       .then((res) => res.json())
@@ -36,7 +36,7 @@ function Posts({ user }) {
   }
 
   function fetchComments() {
-    fetch("https://link-db.onrender.com/comments", {
+    fetch("https://link-loop-db.onrender.com/comments", {
       headers: { Authorization: `Bearer ${Cookies.get("access_token")}` },
     })
       .then((res) => res.json())
@@ -70,7 +70,7 @@ function Posts({ user }) {
 
     if (confirmDeletePost !== null) {
       // User confirmed deletion
-      fetch(`https://link-db.onrender.com/posts/${confirmDeletePost}`, {
+      fetch(`https://link-loop-db.onrender.com/posts/${confirmDeletePost}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${Cookies.get("access_token")}`,
