@@ -1,10 +1,10 @@
-from app.main import app
-from app.database import SessionLocal
+from main import app
+from database import SessionLocal
 from sqlalchemy.orm import Session
-from app.models import User,Post,Message,Comment,Friendship,Like,Notification
+from models import User,Post,Message,Comment,Friendship,Like,Notification
 import random
 from faker import Faker
-from app.dependencies import get_password_hash
+from dependencies import get_password_hash
 
 fake = Faker()
 
@@ -53,7 +53,7 @@ post_pics=["https://i.pinimg.com/236x/5d/86/cf/5d86cf1e68a1d4c30b17fb032c53ec59.
                "https://i.pinimg.com/236x/97/bf/53/97bf53601f15310119ebf93662845a83.jpg"]
     
 
-usernames=["houstin","herbo","mr.plug","mary_jane","nicole" ,"bart" , "peter","john","mary","terry"]
+usernames=["houstin","herbo","mr.plug","nicole" , "peter","john","mary","terry"]
 
 
         

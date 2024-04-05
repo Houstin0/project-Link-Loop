@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import desc
 from typing import List
-from app.dependencies import get_db, get_current_user
-from app.models import Friendship,Message, User
-from app.schemas import User as UserSchema, UserWithMessage ,FriendshipCreate
+from dependencies import get_db, get_current_user
+from models import Friendship,Message, User
+from schemas import User as UserSchema, UserWithMessage ,FriendshipCreate
 
 router = APIRouter()
 
