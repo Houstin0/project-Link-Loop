@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
       proxy: {
         '/api': {
-          target: 'https://link-db.onrender.com',
+          target: 'https://link-loop-db.onrender.com',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
