@@ -12,6 +12,7 @@ greenlet==3.0.3
 h11==0.14.0
 idna==3.6
 passlib==1.7.4
+psycopg2-binary==2.9.9
 pyasn1==0.5.1
 pycparser==2.21
 pydantic==2.5.3
