@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Signup from "./components/SignUp";
 import Login from "./components/LogIn";
 import Home from "./components/Home";
-
 import Contact from "./components/Contact";
 import About from "./components/About";
 import Footer from "./components/Footer";
