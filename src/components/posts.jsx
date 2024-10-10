@@ -41,86 +41,93 @@ function Posts() {
   console.log(posts);
   return (
     <div className="pb-20 p-4 md:pb-6 bg-gray-50 dark:bg-black ">
-    {posts.map((post) => (
-      <>
-        <div
-          key={post.$id}
-          role="status"
-          className="relative rounded-xl rtl:space-x-reverse bg-gray-50 dark:bg-black shadow-sm mb-8 border-2 border-purple-200 dark:border dark:border-purple-400"
-        >
-          <div className="relative w-full items-center max-h-[420px] lg:aspect-[16/9] overflow-hidden rounded-t-2xl bg-gray-50 dark:bg-black">
-            <img
-              className="w-full h-full object-fill object-center lg:object-contain rounded-t-2xl border-b-2 border-purple-100 dark:border-b dark:border-purple-400"
-              src={post.imageUrl}
-              alt={post.caption}
-            />
-          </div>
-  
-          <div className="mt-4 mb-6 pl-2">
-            <button
-              onClick={() => toggleDropdown(post.$id)}
-              id={`dropdownMenuIconButton_${post.$id}`}
-              data-dropdown-toggle={`dropdownDots_${post.$id}`}
-              data-dropdown-placement="bottom-start"
-              className="absolute bottom-14 right-2 p-2 text-sm font-medium text-center text-black bg-purple-200 rounded-lg hover:bg-purple-400 focus:ring-4 focus:outline-none dark:text-gray=100 focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-900"
-              type="button"
-            >
-              <svg
-                className="w-4 h-4 text-black dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 4 15"
+      {posts.map((post) => (
+        <>
+          <div
+            key={post.$id}
+            role="status"
+            className="relative rounded-xl rtl:space-x-reverse bg-gray-50 dark:bg-black shadow-sm mb-8 border-2 border-purple-200 dark:border dark:border-purple-400"
+          >
+            <div className="relative w-full items-center max-h-[420px] lg:aspect-[16/9] overflow-hidden rounded-t-2xl bg-gray-50 dark:bg-black">
+              <img
+                className="w-full h-full object-fill object-center lg:object-contain rounded-t-2xl border-b-2 border-purple-100 dark:border-b dark:border-purple-400"
+                src={post.imageUrl}
+                alt={post.caption}
+              />
+            </div>
+
+            <div className="mt-4 mb-6 pl-2">
+              <button
+                onClick={() => toggleDropdown(post.$id)}
+                id={`dropdownMenuIconButton_${post.$id}`}
+                data-dropdown-toggle={`dropdownDots_${post.$id}`}
+                data-dropdown-placement="bottom-start"
+                className="absolute bottom-14 right-2 p-2 text-sm font-medium text-center text-black bg-purple-200 rounded-lg hover:bg-purple-400 focus:ring-4 focus:outline-none dark:text-gray=100 focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-900"
+                type="button"
               >
-                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-              </svg>
-            </button>
-            <div
-              id={`dropdownDots_${post.$id}`}
-              className={`absolute top-8 right-2 z-10 ${
-                dropdownStates.find((state) => state.postId === post.id)?.isOpen
-                  ? "block"
-                  : "hidden"
-              } bg-gray-100 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-900`}
-            >
-              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
-                {user && post.creator.$id === user.$id && (
-                  <li>
-                    <a
-                      href="#"
-                      // onClick={() => handleDeletePost(post.id)}
-                      className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:text-red-500 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
-                    >
-                      Delete
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-            <div className="flex items-center">
-              <div className="relative">
-                <img className="w-10 h-10 rounded-full" src={post.creator.imageUrl} alt={post.creator.username} />
-                <span className="bottom-0 left-7 absolute w-4 h-4 sm:w-3.5 sm:h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+                <svg
+                  className="w-4 h-4 text-black dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 4 15"
+                >
+                  <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                </svg>
+              </button>
+              <div
+                id={`dropdownDots_${post.$id}`}
+                className={`absolute top-8 right-2 z-10 ${
+                  dropdownStates.find((state) => state.postId === post.id)
+                    ?.isOpen
+                    ? "block"
+                    : "hidden"
+                } bg-gray-100 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-900`}
+              >
+                <ul
+                  className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                  aria-labelledby="dropdownMenuIconButton"
+                >
+                  {user && post.creator.$id === user.$id && (
+                    <li>
+                      <a
+                        href="#"
+                        // onClick={() => handleDeletePost(post.id)}
+                        className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:text-red-500 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
+                      >
+                        Delete
+                      </a>
+                    </li>
+                  )}
+                </ul>
               </div>
-              <div className="flex flex-col mb-2">
-                <span className="text-sm text-purple-800 font-bold ml-2 dark:text-purple-400 hover:text-black dark:hover:text-white">
-                  {post.creator.username}
-                </span>
-                <span className="ml-4 text-xs text-gray-900 dark:text-gray-100">Location or sm</span>
+              <div className="flex items-center">
+                <div className="relative">
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src={post.creator.imageUrl}
+                    alt={post.creator.username}
+                  />
+                  <span className="bottom-0 left-7 absolute w-4 h-4 sm:w-3.5 sm:h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+                </div>
+                <div className="flex flex-col mb-2">
+                  <span className="text-sm text-purple-800 font-bold ml-2 dark:text-purple-400 hover:text-black dark:hover:text-white">
+                    {post.creator.username}
+                  </span>
+                  <span className="ml-4 text-xs text-gray-900 dark:text-gray-100">
+                    Location or sm
+                  </span>
+                </div>
               </div>
+              <p className="pb-4 text-gray-900 dark:text-gray-100">
+                {post.caption}
+              </p>
+              <span className="sr-only">Loading...</span>
             </div>
-            <p className="pb-4 text-gray-900 dark:text-gray-100">{post.caption}</p>
-            <span className="sr-only">Loading...</span>
           </div>
-        </div>
-  
-
-      </>
-    ))}
-  </div>
-  
-
-  
+        </>
+      ))}
+    </div>
   );
 }
 

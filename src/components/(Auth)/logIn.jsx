@@ -14,13 +14,21 @@ function Login() {
     setShowPassword(!showPassword);
     setTimeout(() => {
       setShowPassword(false);
-    }, 1000);
+    }, 2000);
   };
 
   async function login(email, password) {
     setLoading(true);
     try {
-      await account.createEmailPasswordSession(email, password);
+      
+      const promise = account.createEmailPasswordSession('email@example.com', 'password');
+
+      promise.then(function (response) {
+          console.log(response); // Success
+      }, function (error) {
+          console.log(error); // Failure
+      });
+      
       navigate("/"); // Redirect to the dashboard after login
     } catch (err) {
       setError("Login failed. Please check your credentials and try again.");

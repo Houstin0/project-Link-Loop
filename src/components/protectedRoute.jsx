@@ -1,10 +1,10 @@
-import { Navigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext'; // Use the UserContext
+import { Navigate } from "react-router-dom";
+import { useUser } from "../context/UserContext"; // Use the UserContext
 
 function ProtectedRoute({ children }) {
-  const { user } = useUser(); // Access the user from context
+  const { user, loading } = useUser(); // Access the user from context
 
-  if (user === null) {
+  if (loading) {
     // If user is being fetched, you can display a loading state
     return <div>Loading...</div>;
   }

@@ -31,8 +31,12 @@ function Dashboard() {
     const updatedIsDarkMode = !isDarkMode;
 
     if (typeof window !== "undefined") {
-      const themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
-      const themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
+      const themeToggleDarkIcon = document.getElementById(
+        "theme-toggle-dark-icon"
+      );
+      const themeToggleLightIcon = document.getElementById(
+        "theme-toggle-light-icon"
+      );
 
       if (!updatedIsDarkMode) {
         document.documentElement.classList.remove("dark");
@@ -43,14 +47,28 @@ function Dashboard() {
       }
 
       // Set body background based on dark mode state
-      document.body.style.backgroundColor = updatedIsDarkMode ? "var(--bg-color-dark)" : "var(--bg-color-light)";
+      document.body.style.backgroundColor = updatedIsDarkMode
+        ? "var(--bg-color-dark)"
+        : "var(--bg-color-light)";
+
+      // Ensure to update icons visibility
+      if (themeToggleDarkIcon && themeToggleLightIcon) {
+        if (updatedIsDarkMode) {
+          themeToggleDarkIcon.classList.remove("hidden");
+          themeToggleLightIcon.classList.add("hidden");
+        } else {
+          themeToggleDarkIcon.classList.add("hidden");
+          themeToggleLightIcon.classList.remove("hidden");
+        }
+      }
     }
   };
 
   useEffect(() => {
     const isDark =
       localStorage.getItem("color-theme") === "dark" ||
-      (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      (!("color-theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
     setIsDarkMode(isDark);
 
     if (isDark) {
@@ -63,8 +81,12 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
-    const themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
+    const themeToggleDarkIcon = document.getElementById(
+      "theme-toggle-dark-icon"
+    );
+    const themeToggleLightIcon = document.getElementById(
+      "theme-toggle-light-icon"
+    );
 
     if (themeToggleDarkIcon && themeToggleLightIcon) {
       if (isDarkMode) {
@@ -184,14 +206,13 @@ function Dashboard() {
                       </span>
                     </a>
                   </li>
-
                 </ul>
               </div>
 
               <div>
-                <hr className="my-2 border-2 border-purple-200 dark:border dark:border-purple-400"/>
+                <hr className="my-2 border-2 border-purple-200 dark:border dark:border-purple-400" />
                 <ul className="space-y-2 font-medium">
-                <li>
+                  <li>
                     <a
                       href="/profile"
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group hover:no-underline"

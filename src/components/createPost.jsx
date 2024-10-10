@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { appwriteConfig, databases, ID, storage } from "../lib/appwrite";
-import { Permission, Role } from 'appwrite';
+import { Permission, Role } from "appwrite";
 
 function CreatePost() {
   const { user } = useUser();
@@ -20,15 +20,14 @@ function CreatePost() {
       setImagePreview(URL.createObjectURL(selectedFile)); // Create preview URL
     }
   };
-  console.log(imagePreview)
+  console.log(imagePreview);
 
   // Upload the image to Appwrite and create the post
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-  
-      // Step 1: Upload image to Appwrite bucket
+      // Upload image to Appwrite bucket
       let imageId = "";
       if (file) {
         const uploadedFile = await storage.createFile(
@@ -38,35 +37,37 @@ function CreatePost() {
         );
         imageId = uploadedFile.$id; // Store the uploaded image's ID
       }
-  
-      // Step 2: Create a new post document in the database
+
+      // Create a new post document in the database
       const newPost = await databases.createDocument(
         appwriteConfig.databaseId,
         appwriteConfig.postCollectionId,
         ID.unique(),
         {
           caption,
-          imageId,           // Add the imageId field here
+          imageId, // Add the imageId field here
           imageUrl: `https://cloud.appwrite.io/v1/storage/buckets/${appwriteConfig.mediaBucketId}/files/${imageId}/view?project=${appwriteConfig.projectId}&mode=admin`, // Construct the image URL
-          creator: user.$id,    // Owner ID (current user)
+          creator: user.$id, // Owner ID (current user)
         }
       );
-  
-      navigate('/')
+
+      navigate("/");
       console.log("Post created: ", newPost);
     } catch (error) {
       console.log("Error creating post: ", error);
     }
   };
-  
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-sm mx-auto mb-5 mt-10 bg-black">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-sm mx-auto mb-5 mt-10 bg-black"
+    >
       <div className="mb-5">
         <div className="flex items-center justify-center w-full">
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg
@@ -85,15 +86,16 @@ function CreatePost() {
                 />
               </svg>
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag and drop
+                <span className="font-semibold">Click to upload</span> or drag
+                and drop
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 SVG, PNG, JPG, or GIF (MAX. 800x400px)
               </p>
             </div>
-            <input 
-              id="dropzone-file" 
-              type="file" 
+            <input
+              id="dropzone-file"
+              type="file"
               className="hidden"
               onChange={handleFileChange}
             />
@@ -102,7 +104,11 @@ function CreatePost() {
 
         {imagePreview && (
           <div className="mt-4">
-            <img src={imagePreview} alt="Preview" className="w-full h-auto rounded-lg" />
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="w-full h-auto rounded-lg"
+            />
           </div>
         )}
 
