@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getCurrentUser } from '../lib/appwrite';
+import { getCurrentUser, account } from '../lib/appwrite';
 
 const UserContext = createContext();
 

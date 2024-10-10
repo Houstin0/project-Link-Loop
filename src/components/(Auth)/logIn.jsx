@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { account, ID } from "../../lib/appwrite";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -8,7 +7,6 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -20,20 +18,15 @@ function Login() {
   async function login(email, password) {
     setLoading(true);
     try {
+      const session = await account.createEmailPasswordSession(email, password);
       
-      const promise = account.createEmailPasswordSession('email@example.com', 'password');
-
-      promise.then(function (response) {
-          console.log(response); // Success
-      }, function (error) {
-          console.log(error); // Failure
-      });
-      
-      navigate("/"); // Redirect to the dashboard after login
+      if (session) {
+        console.log(session); // Verify session creation
+      setLoading(false);
+      window.location.href = "/";  // Redirect to the dashboard
+      }
     } catch (err) {
       setError("Login failed. Please check your credentials and try again.");
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -47,7 +40,10 @@ function Login() {
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-700 md:text-2xl">
                 Log in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form className="space-y-4 md:space-y-6"               onSubmit={(e) => {
+                e.preventDefault();
+                login(email, password);
+              }}>
                 <div>
                   <label
                     htmlFor="email"
@@ -127,8 +123,7 @@ function Login() {
                 </div>
                 <button
                   type="submit"
-                  className="my-4 w-full text-white bg-gradient-to-r from-purple-600 to-pink-700 hover:bg-gradient-to-l font-bold rounded-full text-lg px-5 py-2.5 text-center"
-                  onClick={() => login(email, password)}
+                  className="my-4 w-full text-white bg-gradient-to-r from-purple-600 to-pink-700 hover:bg-gradient-to-l font-bold rounded-full text-lg px-5 py-2.5 text-center"      
                   disabled={loading}
                 >
                   {loading ? (
