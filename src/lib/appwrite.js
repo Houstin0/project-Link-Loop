@@ -9,7 +9,6 @@ import {
 } from "appwrite";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const client = new Client();
 
@@ -37,7 +36,6 @@ export const avatars = new Avatars(client);
 export function useAuth() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const login = async (email, password) => {
     setLoading(true);
@@ -45,9 +43,9 @@ export function useAuth() {
       const session = await account.createEmailPasswordSession(email, password);
       
       if (session) {
-        console.log(session); // Verify session creation
+        // console.log(session); // Verify session creation
       setLoading(false);
-      navigate("/");  // Redirect to the dashboard
+      window.location.href = "/";  // Redirect to the dashboard
       }
     } catch (err) {
       setError("Login failed. Please check your credentials and try again.");
@@ -113,7 +111,7 @@ export function useAuth() {
       login(email, password);
 
       // Redirect to the dashboard
-      navigate("/");
+      window.location.href = "/";
     } catch (err) {
       if (err.message.includes("already exists")) {
         setError("A user with this email or username already exists.");
