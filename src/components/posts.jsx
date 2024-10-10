@@ -1,6 +1,7 @@
 import { useUser } from "../context/UserContext";
 import { useState, useEffect } from "react";
 import { getPosts } from "../lib/appwrite"; // Import the getPosts function
+import { Link } from "react-router-dom";
 
 function Posts() {
   const { user } = useUser();
@@ -90,13 +91,13 @@ function Posts() {
                 >
                   {user && post.creator.$id === user.$id && (
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to="#"
                         // onClick={() => handleDeletePost(post.id)}
                         className="block px-4 py-2 text-gray-900 hover:bg-gray-300 hover:text-red-500 hover:no-underline dark:hover:bg-gray-600 dark:hover:text-gray-100"
                       >
                         Delete
-                      </a>
+                      </Link>
                     </li>
                   )}
                 </ul>

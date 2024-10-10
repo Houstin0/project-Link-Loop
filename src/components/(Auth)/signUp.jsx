@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-  appwriteConfig,
-  account,
-  ID,
-  avatars,
-  databases,
-} from "../../lib/appwrite";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../lib/appwrite";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [name, setName] = useState("");
@@ -16,9 +10,8 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { signup, error, loading } = useAuth();
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -33,80 +26,13 @@ function Signup() {
     }, 1500);
   };
 
-  const handleSignup = async (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    // Regular expression to validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // Simple email validation
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address.");
-      setLoading(false);
-      return;
-    }
-
-    // Password validation
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
-      setLoading(false);
-      return;
-    }
-
-    // Check if password and confirm password match
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      setLoading(false);
+      alert("Passwords do not match");
       return;
     }
-
-    try {
-      // Create the account
-      const userAccount = await account.create(
-        ID.unique(),
-        email,
-        password,
-        name
-      );
-
-      // Create user avatar
-      const avatarUrl = avatars.getInitials(name);
-
-      // Save the user to the database
-      const newUser = {
-        name: name,
-        username: username,
-        email: email,
-        imageUrl: avatarUrl,
-        accountId: userAccount.$id,
-      };
-
-      const databaseId = appwriteConfig.databaseId;
-      const collectionId = appwriteConfig.userCollectionId;
-
-      await databases.createDocument(
-        databaseId,
-        collectionId,
-        ID.unique(),
-        newUser
-      );
-
-      // Log the user in after successful signup
-      await account.createEmailPasswordSession(email, password);
-
-      // Redirect to the dashboard
-      navigate("/");
-    } catch (err) {
-      if (err.message.includes("already exists")) {
-        setError("A user with this email or username already exists.");
-      } else {
-        setError("Signup failed. Please try again.");
-      }
-      console.error("Signup failed", err);
-    } finally {
-      setLoading(false);
-    }
+    signup(name, username, email, password);
   };
 
   return (
@@ -223,7 +149,7 @@ function Signup() {
                         <path
                           fillRule="evenodd"
                           d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
-                          clipulRe="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                     ) : (
@@ -322,12 +248,12 @@ function Signup() {
             </button>
             <p className="text-sm font-light text-gray-600 dark:text-gray-300">
               Already have an account?{" "}
-              <a
-                href="/login"
+              <Link
+                to="/login"
                 className="font-medium text-white hover:underline"
               >
                 Log in
-              </a>
+              </Link>
             </p>
           </form>
         </div>

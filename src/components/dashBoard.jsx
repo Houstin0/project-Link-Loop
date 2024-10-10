@@ -121,11 +121,11 @@ function Dashboard() {
             <div className="h-full flex flex-col justify-between px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-black border-r-2 border-purple-100 dark:border-r dark:border-purple-400">
               <div>
                 <div className="flex items-center justify-between mb-5">
-                  <a href="/home" className="flex items-center ps-2.5">
+                  <Link to="/home" className="flex items-center ps-2.5">
                     <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
                       Link Loop
                     </span>
-                  </a>
+                  </Link>
 
                   {/* Dark mode toggle button */}
                   <button
@@ -185,8 +185,8 @@ function Dashboard() {
                     </Link>
                   </li>
                   <li>
-                    <a
-                      href="/inbox"
+                    <Link
+                      to="/inbox"
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group hover:no-underline"
                     >
                       <svg
@@ -204,7 +204,7 @@ function Dashboard() {
                       <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
                         3
                       </span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -213,8 +213,8 @@ function Dashboard() {
                 <hr className="my-2 border-2 border-purple-200 dark:border dark:border-purple-400" />
                 <ul className="space-y-2 font-medium">
                   <li>
-                    <a
-                      href="/profile"
+                    <Link
+                      to="/profile"
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group hover:no-underline"
                     >
                       <svg
@@ -243,7 +243,7 @@ function Dashboard() {
                       <span className="flex-1 ms-3 whitespace-nowrap">
                         Settings
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <button

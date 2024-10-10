@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { account, ID } from "../../lib/appwrite";
+import { useAuth } from "../../lib/appwrite";
+import { Link } from "react-router-dom"; 
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { login, error, loading } = useAuth();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -15,20 +15,10 @@ function Login() {
     }, 2000);
   };
 
-  async function login(email, password) {
-    setLoading(true);
-    try {
-      const session = await account.createEmailPasswordSession(email, password);
-      
-      if (session) {
-        console.log(session); // Verify session creation
-      setLoading(false);
-      window.location.href = "/";  // Redirect to the dashboard
-      }
-    } catch (err) {
-      setError("Login failed. Please check your credentials and try again.");
-    }
-  }
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login(email, password);
+  };
 
   return (
     <>
@@ -40,10 +30,7 @@ function Login() {
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-700 md:text-2xl">
                 Log in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6"               onSubmit={(e) => {
-                e.preventDefault();
-                login(email, password);
-              }}>
+              <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label
                     htmlFor="email"
@@ -153,12 +140,12 @@ function Login() {
                 </button>
                 <p className="text-sm font-light text-gray-600 dark:text-gray-300">
                   Don’t have an account yet?{" "}
-                  <a
-                    href="/signup"
+                  <Link
+                    to="/signup"
                     className="font-medium text-white hover:underline"
                   >
                     Sign up
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>

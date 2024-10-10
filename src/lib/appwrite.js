@@ -8,6 +8,9 @@ import {
   ID,
 } from "appwrite";
 
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 export const client = new Client();
 
 export const appwriteConfig = {
@@ -28,6 +31,105 @@ export { ID } from "appwrite";
 export const databases = new Databases(client);
 export const storage = new Storage(client);
 export const avatars = new Avatars(client);
+
+// ============================== Auth
+
+export function useAuth() {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const login = async (email, password) => {
+    setLoading(true);
+    try {
+      const session = await account.createEmailPasswordSession(email, password);
+      
+      if (session) {
+        console.log(session); // Verify session creation
+      setLoading(false);
+      navigate("/");  // Redirect to the dashboard
+      }
+    } catch (err) {
+      setError("Login failed. Please check your credentials and try again.");
+    }
+  };
+
+
+
+  const signup = async (name, username, email, password) => {
+    setLoading(true);
+    
+    // Regular expression to validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Simple email validation
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
+
+    // Password validation
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      setLoading(false);
+      return;
+    }
+
+
+
+    try {
+      // Create the account
+      const userAccount = await account.create(
+        ID.unique(),
+        email,
+        password,
+        name
+      );
+
+      // Create user avatar
+      const avatarUrl = avatars.getInitials(name);
+
+      // Save the user to the database
+      const newUser = {
+        name: name,
+        username: username,
+        email: email,
+        imageUrl: avatarUrl,
+        accountId: userAccount.$id,
+      };
+
+      const databaseId = appwriteConfig.databaseId;
+      const collectionId = appwriteConfig.userCollectionId;
+
+      await databases.createDocument(
+        databaseId,
+        collectionId,
+        ID.unique(),
+        newUser
+      );
+
+      // Log the user in after successful signup
+      login(email, password);
+
+      // Redirect to the dashboard
+      navigate("/");
+    } catch (err) {
+      if (err.message.includes("already exists")) {
+        setError("A user with this email or username already exists.");
+      } else {
+        setError("Signup failed. Please try again.");
+      }
+      console.error("Signup failed", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { login, signup, error, loading };
+}
+
+
 
 // ============================== GET USER
 export async function getCurrentUser() {
