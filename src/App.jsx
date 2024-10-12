@@ -3,12 +3,13 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
-import { UserProvider } from './context/UserContext'
-import Login from './components/(Auth)/logIn';
-import Dashboard from './components/dashBoard';
+
+import Login from './pages/(Auth)/logIn';
+import Dashboard from './pages/dashBoard';
 import ProtectedRoute from './components/protectedRoute';
-import Signup from './components/(Auth)/signUp';
-import CreatePost from './components/createPost';
+import Signup from './pages/(Auth)/signUp';
+import CreatePost from './pages/createPost';
+import Profile from './pages/profile';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -36,13 +37,22 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+    path: '/profile/:userId',
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  
 ]);
 
 function App() {
   return (
-    <UserProvider>
+    
       <RouterProvider router={router} />
-    </UserProvider>
+    
   );
 }
 

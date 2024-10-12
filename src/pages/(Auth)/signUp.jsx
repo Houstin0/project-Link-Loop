@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 function Signup() {
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +31,7 @@ function Signup() {
       alert("Passwords do not match");
       return;
     }
-    signup(name, username, email, password);
+    signup(name, name, email, password);
   };
 
   return (
@@ -51,7 +50,7 @@ function Signup() {
                   htmlFor="name"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                 >
-                  Full Name
+                  \Name
                 </label>
                 <div className="flex">
                   <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
@@ -77,24 +76,24 @@ function Signup() {
                   />
                 </div>
               </div>
-              <div className="w-full">
+              {/* <div className="w-full">
                 <label
-                  htmlFor="username"
+                  htmlFor="name"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                 >
-                  Username
+                  name
                 </label>
                 <input
                   type="text"
-                  name="username"
-                  id="username"
+                  name="name"
+                  id="name"
                   className="bg-gray-50 border border-gray-500 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Username"
+                  placeholder="name"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={name}
+                  onChange={(e) => setname(e.target.value)}
                 />
-              </div>
+              </div> */}
               <div>
                 <label
                   htmlFor="email"

@@ -39,7 +39,8 @@ function Posts() {
     }));
   };
 
-  console.log(posts);
+  console.log(posts)
+
   return (
     <div className="pb-20 p-4 md:pb-6 bg-gray-50 dark:bg-black ">
       {posts.map((post) => (
@@ -51,7 +52,7 @@ function Posts() {
           >
             <div className="relative w-full items-center max-h-[420px] lg:aspect-[16/9] overflow-hidden rounded-t-2xl bg-gray-50 dark:bg-black">
               <img
-                className="w-full h-full object-fill object-center lg:object-contain rounded-t-2xl border-b-2 border-purple-100 dark:border-b dark:border-purple-400"
+                className="w-full h-full object-contain object-center lg:object-contain rounded-t-2xl border-b-2 border-purple-100 dark:border-b dark:border-purple-400"
                 src={post.imageUrl}
                 alt={post.caption}
               />
@@ -107,13 +108,13 @@ function Posts() {
                   <img
                     className="w-10 h-10 rounded-full"
                     src={post.creator.imageUrl}
-                    alt={post.creator.username}
+                    alt={post.creator.name}
                   />
                   <span className="bottom-0 left-7 absolute w-4 h-4 sm:w-3.5 sm:h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
                 </div>
-                <div className="flex flex-col mb-2">
+                <div className="flex flex-col ">
                   <span className="text-sm text-purple-800 font-bold ml-2 dark:text-purple-400 hover:text-black dark:hover:text-white">
-                    {post.creator.username}
+                    {post.creator.name}
                   </span>
                   <span className="ml-4 text-xs text-gray-900 dark:text-gray-100">
                     Location or sm

@@ -10,6 +10,7 @@ import {
 
 import { useState } from "react";
 
+
 export const client = new Client();
 
 export const appwriteConfig = {
