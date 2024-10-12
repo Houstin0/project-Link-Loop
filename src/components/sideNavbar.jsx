@@ -95,8 +95,6 @@ const SideNavbar = () => {
     }
   }, [isDarkMode]);
 
-
-
   return (
     <>
       {windowWidth > 640 ? ( // Show sidebar on larger screens
@@ -148,24 +146,24 @@ const SideNavbar = () => {
                 </button>
               </div>
               <Link to={`/profile/${user.$id}`} className="hover:no-underline">
-  <div className="flex items-center my-4">
-    <div className="relative">
-      <img
-        className="w-10 h-10 rounded-full"
-        src={user.imageUrl}
-        alt={user.username}
-      />
-    </div>
-    <div className="flex flex-col">
-      <span className="text-sm hover:underline text-purple-800 font-extrabold ml-2 dark:text-purple-400 hover:text-black dark:hover:text-white">
-        {user.username}
-      </span>
-      <span className="ml-2 text-sm text-gray-900 dark:text-gray-100 hover:underline">
-        View Your Profile
-      </span>
-    </div>
-  </div>
-</Link>
+                <div className="flex items-center my-4">
+                  <div className="relative">
+                    <img
+                      className="w-10 h-10 rounded-full"
+                      src={user.imageUrl}
+                      alt={user.username}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm hover:underline text-purple-800 font-extrabold ml-2 dark:text-purple-400 hover:text-black dark:hover:text-white">
+                      {user.username}
+                    </span>
+                    <span className="ml-2 text-sm text-gray-900 dark:text-gray-100 hover:underline">
+                      View Your Profile
+                    </span>
+                  </div>
+                </div>
+              </Link>
 
               <ul className="space-y-2 font-medium">
                 <li>
@@ -274,7 +272,6 @@ const SideNavbar = () => {
                     <span className="ms-3 whitespace-nowrap">Log out</span>
                   </button>
                 </li>
-     
               </ul>
             </div>
           </div>
